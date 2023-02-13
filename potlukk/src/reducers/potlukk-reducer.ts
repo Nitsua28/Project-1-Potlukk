@@ -59,14 +59,23 @@ export type CreateUserAction = {type:"CREATE_USER", payload:CreateUserForm}
 // Action types
 export type PotlukkActions = CreateUserAction | GetUsersAction | AddUserAction
 
-const initialState: LukkerUserInfo[] = [];
+const initialState: LukkerUserState = {
+    currentUser: {
+        userId: 0,
+        username: "",
+        fname: "",
+        lname: "",
+        allergies: []
+    },
+    userList:[]
+}
 
-export function lukkerUserReducer(state: LukkerUserInfo[] = initialState, action: PotlukkActions):LukkerUserInfo[]{
-    const nextState: LukkerUserInfo[] = JSON.parse(JSON.stringify(state));
+export function lukkerUserReducer(state: LukkerUserState = initialState, action: PotlukkActions):LukkerUserState{
+    const nextState: LukkerUserState = JSON.parse(JSON.stringify(state));
 
     switch(action.type){
         case "ADD_USER":{
-
+            nextState.userList.push(action.payload)
             return nextState
         }
         case "GET_USERS": {

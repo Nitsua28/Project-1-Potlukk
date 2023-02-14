@@ -30,7 +30,7 @@ export function* signInUser(action:SignInUser){
 
 }
 
-}
+
 export function* getUsers(action: RequestGetUsersAction){
     try{
         const lukkers: LukkerUserInfo[]  = yield getAllUsers();

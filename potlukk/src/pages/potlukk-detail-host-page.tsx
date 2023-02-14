@@ -3,6 +3,7 @@ import { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { Link } from "react-router-dom";
 import { PotlukkActions, LukkerUserState } from "../reducers/potlukk-reducer";
+import { NavBar } from "./navbar";
 
 
 export function PotlukkDetailHost(){
@@ -22,6 +23,7 @@ export function PotlukkDetailHost(){
 
     return (<>
 
+        <NavBar/>
         <button><Link to="/createPotlukk">Create a Potlukk!</Link></button>
         {/*getting all users*/}
         <h1>get all users to invite to pot luck</h1>

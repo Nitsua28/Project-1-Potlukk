@@ -8,6 +8,7 @@ import Calendar from 'react-calendar'
 import "../stylesheets/style.css"
 import 'react-calendar/dist/Calendar.css';
 import { Invitation_Component } from "../components/invitation_component";
+import { NavBar } from "./navbar";
 export function Hostpage(){
     
     const selector = useSelector((store: LukkerUserState) => store)
@@ -44,6 +45,7 @@ export function Hostpage(){
 
     return(
         <>
+            <NavBar/>
             <div className="container">
                 <div className="calendar-container">
                     <div className="date-input-container">

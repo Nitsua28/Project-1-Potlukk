@@ -1,0 +1,33 @@
+ul {
+    position: -webkit-sticky; /* Safari */
+    position: sticky;
+    top: 0;
+    width: 100%;
+    background-color: #dddddd;
+    list-style-type: none;
+    margin: 0;
+    padding: 0;
+    overflow: hidden;
+    display: flex;
+    align-items: center;
+}
+
+li {
+    display: inline;
+}
+
+li div {
+    color: white;
+    text-align: center;
+    padding: 14px 16px;
+    text-decoration: none;
+}
+
+li div:hover {
+    background-color: #111;
+}
+
+#logout {
+    margin-left: auto;
+    padding-right: 60px;
+}

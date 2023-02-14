@@ -17,7 +17,7 @@ export function Hostpage(){
             status: "SCHEDULED",
             description: "",
             isPublic: false,
-            time: "",
+            time: 0,
             tags: []
         },
         hostId: 78617//selector.currentUser.userId
@@ -35,11 +35,15 @@ export function Hostpage(){
     (form !== "") ?
     listArray = selector.userList.filter((item) => item.username === form ) :
     listArray = selector.userList
+
+
+    
+    
     // function filterUsers(){
     //     tempArray = selector.userList.filter((item) => item.username === form)
     // }
     
-    
+    const date = new Date(FormState.details.time * 1000)
     useEffect(()=>{ // use effect for rest gets/ constant display
       
         (async ()=>{
@@ -59,11 +63,11 @@ export function Hostpage(){
                             TIME/DATE
                         </div>
                         <div className="date-inputbox-container">
-                            {FormState.details.time}
+                            {date.toString()}
                         </div>
                     </div>
                     <div className="calendar-box-container">
-                        <Calendar onChange={(value: any,event: any) => dispatchForm({type: "UPDATE_TIME",payload: value.toString()})}/>
+                        <Calendar onChange={(value: any,event: any) => dispatchForm({type: "UPDATE_TIME",payload: value.getTime() /1000})}/>
                     </div>
                 </div>
                 <div className="meta-info-container">
@@ -107,7 +111,7 @@ export function Hostpage(){
                         <div className="inviteHeader-container">List of Users</div>
                         <div className="inviteResults-container">
                             <ul>
-                                {listArray.map((item)=><li key={item.username}>{item.username}{item.fname} {item.lname}<button>invite</button></li>)}
+                                {listArray.map((item)=><li key={item.username}>{item.username}{item.fname} {item.lname}<button >invite</button></li>)}
                             </ul>
                         </div>
                     </div>

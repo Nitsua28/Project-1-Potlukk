@@ -28,7 +28,8 @@ export function* signInUser(action:SignInUser){
         }
     }catch(e){
         yield put({type:"ERROR", payload:true});
-
+}
+}
 export function* getUsers(action: RequestGetUsersAction){
     try{
         const lukkers: LukkerUserInfo[]  = yield getAllUsers();
@@ -59,7 +60,7 @@ export function* watchCreateUserData(){
 
 export function* watchSignInUser(){
     yield takeEvery("SIGN_IN_USER", signInUser)
-
+}
 export function* watchGetUsers(){
     yield takeEvery("REQUEST_GET_USERS", getUsers)
 }
@@ -72,6 +73,5 @@ export function* watchCreatePotlukk(){
 //root saga
 export function* rootSaga(){
 
-    yield all([watchCreateUserData(), watchGetUsers(), watchCreatePotlukk(), watchSignInUser()]) // an array of watcher sagas
-
+    yield all([watchCreateUserData(), watchGetUsers(), watchCreatePotlukk(), watchSignInUser()]); // an array of watcher sagas
 }

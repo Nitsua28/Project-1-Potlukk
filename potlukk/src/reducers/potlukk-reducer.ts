@@ -69,6 +69,7 @@ export type Invitation = {
     status: InvitationStatus,
     potlukker: LukkerUserInfo,
 }
+
 export type LukkerUserState = {
     currentUser: LukkerUserInfo
     userList: LukkerUserInfo[]
@@ -122,7 +123,7 @@ const initialState: LukkerUserState = {
 
     userList:[],
     error:false,
-    newUserAdded:false
+    newUserAdded:false,
     potlukkList: []
 }
 

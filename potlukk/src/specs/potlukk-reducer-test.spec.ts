@@ -9,6 +9,7 @@ const testState:LukkerUserState ={
         allergies:[]
     },
     userList:[],
+    potlukkList: [],
     error:false,
     newUserAdded:false
 }

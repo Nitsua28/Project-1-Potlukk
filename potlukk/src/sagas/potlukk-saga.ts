@@ -1,8 +1,7 @@
 import { takeEvery, put, all, select } from "@redux-saga/core/effects";
 
-import { createUser, getAllUsers, createPotlukk, verifyUser, sendInvite } from "../api/potlukk-requests";
-import { RequestInviteButtonAction } from "../reducers/invite-reducer";
-import { CreateUserAction, LukkerUserInfo, Potlukk, RequestCreatePotlukk, RequestGetUsersAction, SignInUser  } from "../reducers/potlukk-reducer";
+import { createUser, getAllUsers, createPotlukk, verifyUser, getUserById } from "../api/potlukk-requests";
+import { CreateUserAction, LukkerUserInfo, Potlukk, RequestCreatePotlukk, RequestGetUsersAction, SignInUser, RequestUserById  } from "../reducers/potlukk-reducer";
 
 
 //worker sagas
@@ -41,6 +40,16 @@ export function* getUsers(action: RequestGetUsersAction){
     }
 }
 
+export function* getUserByIdFormInvite(action: RequestUserById){
+    try{
+        const lukker: LukkerUserInfo  = yield getUserById(action.payload);
+        yield put({type:"INVITE_BUTTON",payload: lukker});
+    }catch(e){
+        yield put({type:"ERROR", payload: e, error:true
+        });
+    }
+}
+
 export function* createPotlukkByForm(action: RequestCreatePotlukk){
     try{
         
@@ -52,17 +61,17 @@ export function* createPotlukkByForm(action: RequestCreatePotlukk){
     }
 }
 
-export function* inviteLukker(action: RequestInviteButtonAction){
-    try{
+// export function* inviteLukker(action: RequestInviteButtonAction){
+//     try{
         
-        // const potlukk: Potlukk  = yield sendInvite();
-        // yield put({type:"ADD_POTLUKK",payload: });
-    }catch(e){
-        yield put({type:"ERROR", payload: e, error:true
-        });
+//         // const potlukk: Potlukk  = yield sendInvite();
+//         // yield put({type:"ADD_POTLUKK",payload: });
+//     }catch(e){
+//         yield put({type:"ERROR", payload: e, error:true
+//         });
 
-    }
-}
+//     }
+// }
 //watcher sagas
 export function* watchCreateUserData(){
     yield takeEvery("CREATE_USER", createUserData)
@@ -78,10 +87,13 @@ export function* watchGetUsers(){
 export function* watchCreatePotlukk(){
     yield takeEvery("REQUEST_CREATE_POTLUKK", createPotlukkByForm)
 }
-
+export function* watchGetUserByIdInvite(){
+    yield takeEvery("REQUEST_USER_BY_ID", getUserByIdFormInvite)
+}
 //root saga
 export function* rootSaga(){
 
-    yield all([watchCreateUserData(), watchGetUsers(), watchCreatePotlukk(), watchSignInUser()]) // an array of watcher sagas
+    yield all([watchCreateUserData(), watchGetUsers(),
+         watchCreatePotlukk(), watchSignInUser(), watchGetUserByIdInvite()]) // an array of watcher sagas
 }
 

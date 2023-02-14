@@ -10,7 +10,7 @@ const testState:LukkerUserState ={
     },
     potlukkList: [],
     userList:[],
-    potlukkList: [],
+    invited: [],
     error:false,
     newUserAdded:false
 }

@@ -91,12 +91,15 @@ export type RequestGetUsersAction = {type:"REQUEST_GET_USERS", payload: string}
 export type RequestCreatePotlukk = {type: "REQUEST_CREATE_POTLUKK", payload: PotlukkCreationInputState}
 export type Refresh_Users = {type: "REFRESH_USERS"}
 // Action types
+
 export type PotlukkActions = CreateUserAction | GetUsersAction | AddUserAction|
 RequestGetUsersAction | GetUserByName | Refresh_Users | AddPotlukk | RequestCreatePotlukk
+
 
 const initialState: LukkerUserState = {
     currentUser: {
         userId: 0,
+
         username:  '',
         fname:     '',
         lname:     '',
@@ -105,6 +108,7 @@ const initialState: LukkerUserState = {
     userList: [],
     potlukkList: []
 };
+
 
 export function lukkerUserReducer(state: LukkerUserState = initialState, action: PotlukkActions):LukkerUserState{
     const nextState: LukkerUserState = JSON.parse(JSON.stringify(state));

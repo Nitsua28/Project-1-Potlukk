@@ -1,14 +1,14 @@
 import { useReducer, useState } from "react"
-import { useDispatch } from "react-redux"
+import { useDispatch, useSelector } from "react-redux"
 import { formsReducer, jsonInitialState, VerificationForm } from "../reducers/form-reducer";
-import { CreateUserForm, PotlukkActions } from "../reducers/potlukk-reducer"
+import { CreateUserForm, LukkerUserState, PotlukkActions } from "../reducers/potlukk-reducer"
 
 const initialState: VerificationForm = JSON.parse(jsonInitialState)
 
 export function RegisterPage(){
 
     const [formState, dispatchForm] = useReducer(formsReducer, initialState);
-    
+    const userState = useSelector((store:LukkerUserState) => store.userList );
     const dispatch = useDispatch()<PotlukkActions>;
 
     function registerUser(){

@@ -90,11 +90,11 @@ export function formsReducer(state: VerificationForm, action: FormActions): Veri
                 nextState.password.error = "Password must have at least 10 characters"
             }
             //console.log(action.payload.trim().search(/[!-@[-`{-~h]/))
-            if(action.payload.trim().search(/[!-@[-`{-~h]/) < 0 && action.payload.length > 9){
+            if(action.payload.trim().search(/[!-@[-`{-~]/) < 0 && action.payload.length > 9){
                 nextState.password.hasError = true;
                 nextState.password.error = "Password must have at least 1 special character"
             }
-            if(action.payload.search(/[!-@[-`{-~h]/g) > 0 && action.payload.length > 9){
+            if(action.payload.search(/[!-@[-`{-~]/) >= 0 && action.payload.length > 9){
                 nextState.password.hasError = false;
                 nextState.password.error = ""
             }

@@ -2,14 +2,17 @@ import { useReducer, useState } from "react"
 import { useDispatch, useSelector } from "react-redux"
 import { formsReducer, jsonInitialState, VerificationForm } from "../reducers/form-reducer";
 import { CreateUserForm, LukkerUserState, PotlukkActions } from "../reducers/potlukk-reducer"
+import { useNavigate } from "react-router-dom";
 
 const initialState: VerificationForm = JSON.parse(jsonInitialState)
 
 export function RegisterPage(){
-
+    const router = useNavigate()
     const [formState, dispatchForm] = useReducer(formsReducer, initialState);
-    const userState = useSelector((store:LukkerUserState) => store.userList );
+    const userState = useSelector((store:LukkerUserState) => store);
     const dispatch = useDispatch()<PotlukkActions>;
+    if(userState.error){router("/error")}
+    if(userState.newUserAdded){router("/success")}
 
     function registerUser(){
         //make allergy array
@@ -34,6 +37,7 @@ export function RegisterPage(){
             dispatch({type:"CREATE_USER", payload:newLukker})
         }else{alert("Form is invalid")}
     }
+
 
     return <>
         <div style={{display:"flex", width:"100%", height:"100vh", backgroundColor:"wheat", justifyContent:"center", alignItems:"center"}}>

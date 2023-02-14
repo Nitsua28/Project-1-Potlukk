@@ -75,6 +75,7 @@ export type LukkerUserState = {
     newUserAdded: boolean
 
     potlukkList: PotlukkCreationInputState[]
+    invited: LukkerUserInfo[]
 
 }
 
@@ -89,7 +90,8 @@ export type Potlukk = {
 //Reducer Actions 
 export type GetUsersAction = {type:"GET_USERS", payload: LukkerUserInfo[]}
 export type AddUserAction = {type:"ADD_USER", payload:LukkerUserInfo}
-
+export type InviteUserAction = {type: "INVITE_USER_ACTION", payload: string}
+export type DeleteInvitedAction = {type: "DELETE_INVITED_ACTION", payload: string}
 export type SetErrorAction = {type:"ERROR", payload:boolean}
 export type ClearErrorAction = {type:"CLEAR_ERROR"}
 export type ClearUserAdded = {type:"CLEAR_USER_ADDED"}
@@ -100,12 +102,14 @@ export type AddPotlukk = {type:"ADD_POTLUKK", payload: PotlukkCreationInputState
 export type CreateUserAction = {type:"CREATE_USER", payload:CreateUserForm}
 export type SignInUser = {type:"SIGN_IN_USER", payload:SignInForm}
 export type RequestGetUsersAction = {type:"REQUEST_GET_USERS", payload: string}
+export type RequestUserById = {type: "REQUEST_USER_BY_ID", payload: string}
 export type RequestCreatePotlukk = {type: "REQUEST_CREATE_POTLUKK", payload: PotlukkCreationInputState}
 export type Refresh_Users = {type: "REFRESH_USERS"}
 // Action types
 export type PotlukkActions = CreateUserAction | GetUsersAction | AddUserAction | SetErrorAction
         | ClearErrorAction | ClearUserAdded | SetUser | SignInUser |
-        RequestGetUsersAction | GetUserByName | Refresh_Users | AddPotlukk | RequestCreatePotlukk;
+        RequestGetUsersAction | GetUserByName | Refresh_Users | AddPotlukk | RequestCreatePotlukk
+        |InviteUserAction | DeleteInvitedAction;
 
 const initialState: LukkerUserState = {
     currentUser: {
@@ -119,7 +123,8 @@ const initialState: LukkerUserState = {
     userList:[],
     error:false,
     newUserAdded:false,
-    potlukkList: []
+    potlukkList: [],
+    invited: []
 }
 
 export function lukkerUserReducer(state: LukkerUserState = initialState, action: PotlukkActions):LukkerUserState{
@@ -155,6 +160,19 @@ export function lukkerUserReducer(state: LukkerUserState = initialState, action:
         }
         case "SET_USER":{
             nextState.currentUser = action.payload
+            return nextState
+        }
+        case "INVITE_USER_ACTION":{
+            let users: LukkerUserInfo[] = nextState.userList.filter((item)=>item.userId === Number(action.payload));
+    
+            (!(nextState.invited.some((item) => item.userId === users[0].userId))) &&
+            nextState.invited.push(users[0])
+                //some method implement
+            return nextState
+        }
+        case "DELETE_INVITED_ACTION":{
+            let users: LukkerUserInfo[] = nextState.invited.filter((item)=>item.userId !== Number(action.payload));
+            nextState.invited = users
             return nextState
         }
         default:

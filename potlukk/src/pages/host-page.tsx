@@ -11,7 +11,8 @@ import { Invitation_Component } from "../components/invitation_component";
 import { NavBar } from "./navbar";
 export function Hostpage(){
     
-    const selector = useSelector((store: LukkerUserState) => store)
+    const lukkerSelector = useSelector((store: LukkerUserState) => store)
+  
     const initialState: PotlukkCreationInputState = {
         details: {
             title: "",
@@ -22,7 +23,7 @@ export function Hostpage(){
             time: 0,
             tags: []
         },
-        hostId: selector.currentUser.userId
+        hostId: lukkerSelector.currentUser.userId
 
     }
     

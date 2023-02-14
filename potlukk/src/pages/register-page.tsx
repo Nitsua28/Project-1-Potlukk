@@ -41,6 +41,7 @@ export function RegisterPage(){
 
     return <>
         <div style={{display:"flex", width:"100%", height:"100vh", backgroundColor:"wheat", justifyContent:"center", alignItems:"center"}}>
+            <button style={{position:"absolute", top:"20px", left:"20px"}} onClick={()=>router("/")}>Back</button>
             <div style={{display:"flex", flexDirection:"column"}}>
                 <div>
                     <label htmlFor="userName" >Username</label>

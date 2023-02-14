@@ -30,10 +30,11 @@ export function Hostpage(){
     const sendDispatch = useDispatch()<PotlukkActions>
     const [tagInput, setTagInput]= useState("")
     const [form,setForm] = useState("");
-    let tempArray: LukkerUserInfo[] = [];
+    
+    let listArray: LukkerUserInfo[] = [];
     (form !== "") ?
-    tempArray = selector.userList.filter((item) => item.username === form ) :
-    tempArray = selector.userList
+    listArray = selector.userList.filter((item) => item.username === form ) :
+    listArray = selector.userList
     // function filterUsers(){
     //     tempArray = selector.userList.filter((item) => item.username === form)
     // }
@@ -106,7 +107,7 @@ export function Hostpage(){
                         <div className="inviteHeader-container">List of Users</div>
                         <div className="inviteResults-container">
                             <ul>
-                                {tempArray.map((item)=><li key={item.username}>{item.username}{item.fname} {item.lname}<button>invite</button></li>)}
+                                {listArray.map((item)=><li key={item.username}>{item.username}{item.fname} {item.lname}<button>invite</button></li>)}
                             </ul>
                         </div>
                     </div>

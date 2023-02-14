@@ -1,6 +1,9 @@
 
-import { PotlukkStatus } from "./potlukk-reducer"
+import { LukkerUserInfo, PotlukkStatus } from "./potlukk-reducer"
 
+export type InvitedPeople = {
+    listArr: LukkerUserInfo[] 
+}
 export type PotlukkCreationInputState = {
     details:{
         title: string,
@@ -26,8 +29,9 @@ export type UpdateIsPublic = {type: "UPDATE_ISPUBLIC", payload: boolean}
 export type UpdateTime = {type: "UPDATE_TIME", payload: string}
 export type AddTag = {type: "ADD_TAG", payload: string}
 export type DeleteTag = {type: "DELETE_TAG", payload: string}
+export type InviteButtonAction = {type: "INVITE_BUTTON_ACTION", payload: number}
 export type PotlukkCreationInputFormActions = UpdateDescription | UpdateIsPublic | UpdateLocation |
-UpdateScheduledAction| UpdateCancelledAction | UpdateTitle | UpdateTime | AddTag
+UpdateScheduledAction| UpdateCancelledAction | UpdateTitle | UpdateTime | AddTag | InviteButtonAction
 
 export function PotlukkFormReducer(state: PotlukkCreationInputState, action: PotlukkCreationInputFormActions):PotlukkCreationInputState{
 
@@ -65,8 +69,13 @@ export function PotlukkFormReducer(state: PotlukkCreationInputState, action: Pot
             nextState.details.tags.push(action.payload);
             return nextState
         }
-        // case "DELETE_TAG":{
-
+        // case "INVITE_BUTTON_ACTION":{
+            
         // }
+        // case "DELETE_TAG":{
+        default:{
+            return nextState
+        }
+        
     }
 }

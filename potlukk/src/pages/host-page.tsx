@@ -37,8 +37,10 @@ export function Hostpage(){
     //     tempArray = selector.userList.filter((item) => item.username === form)
     // }
     
+
     
     const date = new Date(FormState.details.time * 1000)
+
 
     return(
         <>
@@ -86,7 +88,9 @@ export function Hostpage(){
 
                 </div>
                 <div className="invite-lukkers-container">
+
                     <Invitation_Component/>
+
                 </div>
                 
             </div>

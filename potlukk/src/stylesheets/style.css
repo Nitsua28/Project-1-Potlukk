@@ -1,0 +1,148 @@
+.container {  display: grid;
+    grid-template-columns: 1fr 1fr 1fr;
+    grid-template-rows: 1fr 1fr 0.8fr 1.2fr 1fr;
+    grid-auto-columns: 1fr;
+    grid-auto-rows: 1fr;
+    gap: 0px 0px;
+    grid-auto-flow: row;
+    grid-template-areas:
+      "calendar-container meta-info-container invite-lukkers-container"
+      "calendar-container meta-info-container invite-lukkers-container"
+      "calendar-container meta-info-container invite-lukkers-container"
+      "calendar-container meta-info-container invite-lukkers-container"
+      "calendar-container meta-info-container invite-lukkers-container";
+  }
+  
+  .calendar-container {  display: grid;
+    grid-template-columns: 1fr 1fr 1fr;
+    grid-template-rows: 1fr 1fr 1fr;
+    gap: 0px 0px;
+    grid-auto-flow: row;
+    grid-template-areas:
+      "date-input-container date-input-container date-input-container"
+      "calendar-box-container calendar-box-container calendar-box-container"
+      "calendar-box-container calendar-box-container calendar-box-container";
+    grid-area: calendar-container;
+  }
+  
+  .date-input-container {  display: grid;
+    grid-template-columns: 1fr 1fr 1fr;
+    grid-template-rows: 1fr 1fr 1fr;
+    gap: 0px 0px;
+    grid-auto-flow: row;
+    grid-template-areas:
+      "date-header-container date-inputbox-container date-inputbox-container"
+      "date-header-container date-inputbox-container date-inputbox-container"
+      "date-header-container date-inputbox-container date-inputbox-container";
+    grid-area: date-input-container;
+  }
+  
+  .date-header-container { grid-area: date-header-container; }
+  
+  .date-inputbox-container { grid-area: date-inputbox-container; }
+  
+  .calendar-box-container { grid-area: calendar-box-container; }
+  
+  .meta-info-container {  display: grid;
+    grid-template-columns: 1fr 1fr 1fr;
+    grid-template-rows: 1fr 1fr 1fr 1fr 1fr 1fr;
+    gap: 0px 0px;
+    grid-auto-flow: row;
+    grid-template-areas:
+      "title-input-container title-input-container title-input-container"
+      "location-input-container location-input-container location-input-container"
+      "description-input-container description-input-container description-input-container"
+      "isPublic-container isPublic-container isPublic-container"
+      "tags-container tags-container tags-container"
+      "createbutton-container createbutton-container createbutton-container";
+    grid-area: meta-info-container;
+  }
+  
+  .title-input-container { grid-area: title-input-container; }
+  
+  .location-input-container { grid-area: location-input-container; }
+  
+  .description-input-container { grid-area: description-input-container; }
+  
+  .isPublic-container { grid-area: isPublic-container; }
+  
+  .tags-container {  display: grid;
+    grid-template-columns: 1fr 1fr 1fr;
+    grid-template-rows: 1fr 1fr 1fr;
+    gap: 0px 0px;
+    grid-auto-flow: row;
+    grid-template-areas:
+      "tags-input-container tags-input-container tagsshow-container"
+      "tags-input-container tags-input-container tagsshow-container"
+      "tagsbutton-container tagsbutton-container tagsshow-container";
+    grid-area: tags-container;
+  }
+  
+  .tags-input-container { grid-area: tags-input-container; }
+  
+  .tagsbutton-container { grid-area: tagsbutton-container; }
+  
+  .tagsshow-container { grid-area: tagsshow-container; }
+  
+  .createbutton-container { grid-area: createbutton-container; }
+  
+  .invite-lukkers-container {  display: grid;
+    grid-template-columns: 1fr 1fr 1fr;
+    grid-template-rows: 1fr 1fr 1fr;
+    gap: 0px 0px;
+    grid-auto-flow: row;
+    grid-template-areas:
+      "lukkers-input-container lukkers-input-container lukkers-input-container"
+      "invite-container invite-container invite-container"
+      "invited-container invited-container invited-container";
+    grid-area: invite-lukkers-container;
+  }
+  
+  .lukkers-input-container {  display: grid;
+    grid-template-columns: 1fr 1fr 1fr;
+    grid-template-rows: 1fr 1fr 1fr;
+    gap: 0px 0px;
+    grid-auto-flow: row;
+    grid-template-areas:
+      "search-container search-container searchbutton-container"
+      "search-container search-container searchbutton-container"
+      "search-container search-container searchbutton-container";
+    grid-area: lukkers-input-container;
+  }
+  
+  .searchbutton-container { grid-area: searchbutton-container; }
+  
+  .search-container { grid-area: search-container; }
+  
+  .invite-container {  display: grid;
+    grid-template-columns: 1fr 1fr 1fr;
+    grid-template-rows: 1fr 1fr 1fr;
+    gap: 0px 0px;
+    grid-auto-flow: row;
+    grid-template-areas:
+      "inviteHeader-container inviteHeader-container inviteHeader-container"
+      "inviteResults-container inviteResults-container inviteResults-container"
+      "inviteResults-container inviteResults-container inviteResults-container";
+    grid-area: invite-container;
+  }
+  
+  .inviteHeader-container { grid-area: inviteHeader-container; }
+  
+  .inviteResults-container { grid-area: inviteResults-container; }
+  
+  .invited-container {  display: grid;
+    grid-template-columns: 1fr 1fr 1fr;
+    grid-template-rows: 1fr 1fr 1fr;
+    gap: 0px 0px;
+    grid-auto-flow: row;
+    grid-template-areas:
+      "invitedHeader-container invitedHeader-container invitedHeader-container"
+      "invitedResults-container invitedResults-container invitedResults-container"
+      "invitedResults-container invitedResults-container invitedResults-container";
+    grid-area: invited-container;
+  }
+  
+  .invitedHeader-container { grid-area: invitedHeader-container; }
+  
+  .invitedResults-container { grid-area: invitedResults-container; }
+  

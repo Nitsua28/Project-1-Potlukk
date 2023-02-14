@@ -61,7 +61,10 @@ export type CreateUserForm = {
     lname:     string;
     allergies: string[];
 }
-
+export type Invitation = {
+    status: InvitationStatus,
+    potlukker: LukkerUserInfo,
+}
 export type LukkerUserState = {
     currentUser: LukkerUserInfo
     userList: LukkerUserInfo[]
@@ -72,10 +75,7 @@ export type LukkerUserState = {
 export type Potlukk = {
     details: PotlukkCreationInputState,
     host: LukkerUserInfo,
-    invitations: {
-        status: InvitationStatus,
-        potlukker: LukkerUserInfo,
-    }
+    invitations: Invitation[],
     dishes: Dishes
 }
 

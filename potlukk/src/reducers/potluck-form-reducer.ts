@@ -13,7 +13,7 @@ export type PotlukkCreationInputState = {
         status: string,
         description: string,
         isPublic: Boolean,
-        time: string,
+        time: number,
         tags: string[]
         
     }
@@ -26,7 +26,7 @@ export type UpdateScheduledAction = {type:"UPDATE_SCHEDULED", payload:"SCHEDULED
 export type UpdateCancelledAction = {type:"UPDATE_CANCELLED", payload:"CANCELLED"}
 export type UpdateDescription = {type: "UPDATE_DESCRIPTION", payload: string}
 export type UpdateIsPublic = {type: "UPDATE_ISPUBLIC", payload: boolean}
-export type UpdateTime = {type: "UPDATE_TIME", payload: string}
+export type UpdateTime = {type: "UPDATE_TIME", payload: number}
 export type AddTag = {type: "ADD_TAG", payload: string}
 export type DeleteTag = {type: "DELETE_TAG", payload: string}
 export type InviteButtonAction = {type: "INVITE_BUTTON_ACTION", payload: number}

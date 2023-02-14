@@ -20,7 +20,7 @@ export function Hostpage(){
             time: 0,
             tags: []
         },
-        hostId: 78617//selector.currentUser.userId
+        hostId: selector.currentUser.userId
 
     }
     

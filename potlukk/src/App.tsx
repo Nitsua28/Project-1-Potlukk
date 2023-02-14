@@ -23,7 +23,7 @@ function App() {
   return (
     <Provider store={potlukkStore}>
       <BrowserRouter>
-      <NavBar/>
+      
         <Routes>
           <Route path='/' element={<SignIn/>}/>
           <Route path='/home' element={<HomePage/>}/>

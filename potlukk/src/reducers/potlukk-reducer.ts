@@ -1,8 +1,12 @@
+
+import { SignInForm } from "../pages/signin-page";
+
 import { PotlukkCreationInputState } from "./potluck-form-reducer";
 export enum PotlukkStatus {
     SCHEDULED,
     CANCELLED
 }
+
 
 export enum Allergen {
     MILK,
@@ -11,7 +15,7 @@ export enum Allergen {
     SHELLFISH,
     SOY,
     WHEAT,
-    TREENUT
+    TREE_NUT
 }
 
 export enum InvitationStatus {
@@ -68,6 +72,10 @@ export type Invitation = {
 export type LukkerUserState = {
     currentUser: LukkerUserInfo
     userList: LukkerUserInfo[]
+
+    error: boolean
+    newUserAdded: boolean
+
     potlukkList: PotlukkCreationInputState[]
 
 }
@@ -77,23 +85,29 @@ export type Potlukk = {
     host: LukkerUserInfo,
     invitations: Invitation[],
     dishes: Dishes
+
 }
 
 //Reducer Actions 
 export type GetUsersAction = {type:"GET_USERS", payload: LukkerUserInfo[]}
 export type AddUserAction = {type:"ADD_USER", payload:LukkerUserInfo}
+
+export type SetErrorAction = {type:"ERROR", payload:boolean}
+export type ClearErrorAction = {type:"CLEAR_ERROR"}
+export type ClearUserAdded = {type:"CLEAR_USER_ADDED"}
+export type SetUser = {type:"SET_USER", payload:LukkerUserInfo}
 export type GetUserByName = {type:"GET_USER_BY_NAME", payload: string}
 export type AddPotlukk = {type:"ADD_POTLUKK", payload: PotlukkCreationInputState}
-// export type AddInvitations
 //Saga Actions
 export type CreateUserAction = {type:"CREATE_USER", payload:CreateUserForm}
+export type SignInUser = {type:"SIGN_IN_USER", payload:SignInForm}
 export type RequestGetUsersAction = {type:"REQUEST_GET_USERS", payload: string}
 export type RequestCreatePotlukk = {type: "REQUEST_CREATE_POTLUKK", payload: PotlukkCreationInputState}
 export type Refresh_Users = {type: "REFRESH_USERS"}
 // Action types
-
-export type PotlukkActions = CreateUserAction | GetUsersAction | AddUserAction|
-RequestGetUsersAction | GetUserByName | Refresh_Users | AddPotlukk | RequestCreatePotlukk
+export type PotlukkActions = CreateUserAction | GetUsersAction | AddUserAction | SetErrorAction
+        | ClearErrorAction | ClearUserAdded | SetUser | SignInUser |
+RequestGetUsersAction | GetUserByName | Refresh_Users | AddPotlukk | RequestCreatePotlukk;
 
 
 const initialState: LukkerUserState = {
@@ -105,9 +119,12 @@ const initialState: LukkerUserState = {
         lname:     '',
         allergies: []
     },
-    userList: [],
+
+    userList:[],
+    error:false,
+    newUserAdded:false
     potlukkList: []
-};
+}
 
 
 export function lukkerUserReducer(state: LukkerUserState = initialState, action: PotlukkActions):LukkerUserState{
@@ -116,6 +133,8 @@ export function lukkerUserReducer(state: LukkerUserState = initialState, action:
     switch(action.type){
         case "ADD_USER":{
             nextState.userList.push(action.payload)
+            nextState.newUserAdded = true
+            nextState.currentUser = action.payload
             return nextState
         }
         case "GET_USERS": {
@@ -127,7 +146,23 @@ export function lukkerUserReducer(state: LukkerUserState = initialState, action:
             return nextState
         }
 
-        
+        case "ERROR":{
+            nextState.error = action.payload
+            return nextState
+        }
+        case "CLEAR_ERROR":{
+            nextState.error = false;
+            return nextState
+        }
+        case "CLEAR_USER_ADDED":{
+            nextState.newUserAdded = false;
+            return nextState
+        }
+        case "SET_USER":{
+            nextState.currentUser = action.payload
+            return nextState
+        }
+
         default:
             return nextState
     }

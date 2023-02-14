@@ -8,7 +8,7 @@ export function NavBar(){
 
     return <>
         <div>
-        <Link to="/">Home</Link>
+        <Link to="/">Signin</Link>
         <Link to="/home">Home</Link>
         <Link to="/registration">Register</Link>
         <Link to="/guest">Guest</Link>

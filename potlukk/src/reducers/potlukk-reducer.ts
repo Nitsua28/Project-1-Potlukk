@@ -1,12 +1,9 @@
-
 import { SignInForm } from "../pages/signin-page";
-
 import { PotlukkCreationInputState } from "./potluck-form-reducer";
 export enum PotlukkStatus {
     SCHEDULED,
     CANCELLED
 }
-
 
 export enum Allergen {
     MILK,
@@ -108,8 +105,7 @@ export type Refresh_Users = {type: "REFRESH_USERS"}
 // Action types
 export type PotlukkActions = CreateUserAction | GetUsersAction | AddUserAction | SetErrorAction
         | ClearErrorAction | ClearUserAdded | SetUser | SignInUser |
-RequestGetUsersAction | GetUserByName | Refresh_Users | AddPotlukk | RequestCreatePotlukk;
-
+        RequestGetUsersAction | GetUserByName | Refresh_Users | AddPotlukk | RequestCreatePotlukk;
 
 const initialState: LukkerUserState = {
     currentUser: {
@@ -120,13 +116,11 @@ const initialState: LukkerUserState = {
         lname:     '',
         allergies: []
     },
-
     userList:[],
     error:false,
     newUserAdded:false,
     potlukkList: []
 }
-
 
 export function lukkerUserReducer(state: LukkerUserState = initialState, action: PotlukkActions):LukkerUserState{
     const nextState: LukkerUserState = JSON.parse(JSON.stringify(state));
@@ -163,7 +157,6 @@ export function lukkerUserReducer(state: LukkerUserState = initialState, action:
             nextState.currentUser = action.payload
             return nextState
         }
-
         default:
             return nextState
     }

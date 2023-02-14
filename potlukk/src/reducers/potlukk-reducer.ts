@@ -69,13 +69,26 @@ export type Invitation = {
 export type LukkerUserState = {
     currentUser: LukkerUserInfo
     userList: LukkerUserInfo[]
+
     error: boolean
     newUserAdded: boolean
+
+    potlukkList: PotlukkCreationInputState[]
+
+}
+
+export type Potlukk = {
+    details: PotlukkCreationInputState,
+    host: LukkerUserInfo,
+    invitations: Invitation[],
+    dishes: Dishes
+
 }
 
 //Reducer Actions 
-export type GetUsersAction = {type:"GET_USERS", payload:LukkerUserInfo[]}
+export type GetUsersAction = {type:"GET_USERS", payload: LukkerUserInfo[]}
 export type AddUserAction = {type:"ADD_USER", payload:LukkerUserInfo}
+
 export type SetErrorAction = {type:"ERROR", payload:boolean}
 export type ClearErrorAction = {type:"CLEAR_ERROR"}
 export type ClearUserAdded = {type:"CLEAR_USER_ADDED"}
@@ -122,6 +135,11 @@ export function lukkerUserReducer(state: LukkerUserState = initialState, action:
             nextState.userList = action.payload
             return nextState
         }
+        case "ADD_POTLUKK": {
+            nextState.potlukkList.push(action.payload)
+            return nextState
+        }
+
         case "ERROR":{
             nextState.error = action.payload
             return nextState
@@ -138,12 +156,6 @@ export function lukkerUserReducer(state: LukkerUserState = initialState, action:
             nextState.currentUser = action.payload
             return nextState
         }
-        case "ADD_POTLUKK": {
-            nextState.potlukkList.push(action.payload)
-            return nextState
-        }
-
-        
         default:
             return nextState
     }

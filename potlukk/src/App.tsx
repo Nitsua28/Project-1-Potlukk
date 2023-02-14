@@ -30,9 +30,12 @@ function App() {
           <Route path='/registration' element={<RegisterPage/>}/>
           <Route path='/guest' element={<PotlukkDetailGuest/>}/>
           <Route path='/host' element={<PotlukkDetailHost/>}/>
+
           <Route path="/error" element={<RegisterFailed/>}/>
           <Route path="/success" element={<RegisterSuccess/>}/>
+
           <Route path='/createPotlukk' element={<Hostpage/>}/>
+
         </Routes>
       </BrowserRouter>
     </Provider>

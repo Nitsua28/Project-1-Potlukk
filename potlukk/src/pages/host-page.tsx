@@ -1,13 +1,14 @@
 
-import { useState, useReducer } from "react"
+import { useState, useReducer, useEffect } from "react"
 import { useDispatch, useSelector } from "react-redux"
 import { PotlukkFormReducer } from "../reducers/potluck-form-reducer"
-import { PotlukkActions ,LukkerUserState, PotlukkStatus } from "../reducers/potlukk-reducer"
+import { PotlukkActions ,LukkerUserState, PotlukkStatus, LukkerUserInfo } from "../reducers/potlukk-reducer"
 import { PotlukkCreationInputState } from "../reducers/potluck-form-reducer";
 import Calendar from 'react-calendar'
 import "../stylesheets/style.css"
 import 'react-calendar/dist/Calendar.css';
 export function Hostpage(){
+    
     const selector = useSelector((store: LukkerUserState) => store)
     const initialState: PotlukkCreationInputState = {
         details: {
@@ -28,22 +29,25 @@ export function Hostpage(){
 
     const sendDispatch = useDispatch()<PotlukkActions>
     const [tagInput, setTagInput]= useState("")
-
-
-
-
-    // const selector = useSelector((store: ) => store.userList)
-    // const [form,setForm] = useState("")
+    const [form,setForm] = useState("");
+    let tempArray: LukkerUserInfo[] = [];
+    (form !== "") ?
+    tempArray = selector.userList.filter((item) => item.username === form ) :
+    tempArray = selector.userList
+    // function filterUsers(){
+    //     tempArray = selector.userList.filter((item) => item.username === form)
+    // }
     
-    // const filteredByUsername = selector.filter((item) => item.username === form)
-    // useEffect(()=>{ // use effect for rest gets/ constant display
+    
+    useEffect(()=>{ // use effect for rest gets/ constant display
       
-    //     (async ()=>{
-    //         await dispatch({type: "REQUEST_GET_USERS", payload: form}); // await since it rreturns a promise
+        (async ()=>{
             
-    //     })();
-    
-    //   },[]);
+            await sendDispatch({type: "REQUEST_GET_USERS", payload: form}); // await since it rreturns a promise
+            
+        })();
+        
+      },[]);
 
     return(
         <>
@@ -91,15 +95,23 @@ export function Hostpage(){
                 </div>
                 <div className="invite-lukkers-container">
                     <div className="lukkers-input-container">
-                        <div className="searchbutton-container"></div>
-                        <div className="search-container"></div>
+                        <div className="searchbutton-container">
+                            {/* <button onClick={()=>()}>search</button> */}
+                        </div>
+                        <div className="search-container">
+                        <input placeholder="username" onChange={(e) =>setForm(e.target.value)} ></input>
+                        </div>
                     </div>
                     <div className="invite-container">
-                        <div className="inviteHeader-container"></div>
-                        <div className="inviteResults-container"></div>
+                        <div className="inviteHeader-container">List of Users</div>
+                        <div className="inviteResults-container">
+                            <ul>
+                                {tempArray.map((item)=><li key={item.username}>{item.username}{item.fname} {item.lname}<button>invite</button></li>)}
+                            </ul>
+                        </div>
                     </div>
                     <div className="invited-container">
-                        <div className="invitedHeader-container"></div>
+                        <div className="invitedHeader-container">Invited Users</div>
                         <div className="invitedResults-container"></div>
                     </div>
                 </div>

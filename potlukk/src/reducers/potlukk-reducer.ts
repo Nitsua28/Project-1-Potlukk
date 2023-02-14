@@ -84,6 +84,7 @@ export type GetUsersAction = {type:"GET_USERS", payload: LukkerUserInfo[]}
 export type AddUserAction = {type:"ADD_USER", payload:LukkerUserInfo}
 export type GetUserByName = {type:"GET_USER_BY_NAME", payload: string}
 export type AddPotlukk = {type:"ADD_POTLUKK", payload: PotlukkCreationInputState}
+// export type AddInvitations
 //Saga Actions
 export type CreateUserAction = {type:"CREATE_USER", payload:CreateUserForm}
 export type RequestGetUsersAction = {type:"REQUEST_GET_USERS", payload: string}
@@ -121,6 +122,7 @@ export function lukkerUserReducer(state: LukkerUserState = initialState, action:
             nextState.potlukkList.push(action.payload)
             return nextState
         }
+
         
         default:
             return nextState

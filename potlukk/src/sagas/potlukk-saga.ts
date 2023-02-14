@@ -27,6 +27,7 @@ export function* getUsers(action: RequestGetUsersAction){
 
 export function* createPotlukkByForm(action: RequestCreatePotlukk){
     try{
+        
         const potlukk: Potlukk  = yield createPotlukk(action.payload);
         yield put({type:"ADD_POTLUKK",payload: potlukk});
     }catch(e){

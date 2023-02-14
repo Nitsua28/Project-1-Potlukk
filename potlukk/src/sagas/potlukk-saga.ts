@@ -25,7 +25,11 @@ export function* signInUser(action:SignInUser){
         }
     }catch(e){
         yield put({type:"ERROR", payload:true});
-    }
+
+}
+
+}
+
 }
 export function* getUsers(action: RequestGetUsersAction){
     try{
@@ -66,5 +70,7 @@ export function* watchCreatePotlukk(){
 
 //root saga
 export function* rootSaga(){
+
     yield all([watchCreateUserData(), watchGetUsers(), watchCreatePotlukk(), watchSignInUser()]) // an array of watcher sagas
 }
+

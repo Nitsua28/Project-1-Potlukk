@@ -66,6 +66,7 @@ export type Invitation = {
     status: InvitationStatus,
     potlukker: LukkerUserInfo,
 }
+
 export type LukkerUserState = {
     currentUser: LukkerUserInfo
     userList: LukkerUserInfo[]

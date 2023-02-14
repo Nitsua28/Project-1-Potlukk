@@ -11,8 +11,12 @@ import { createStore, applyMiddleware } from '@reduxjs/toolkit';
 import { lukkerUserReducer } from './reducers/potlukk-reducer';
 import { rootSaga } from './sagas/potlukk-saga';
 import { NavBar } from './pages/navbar';
+
 import { RegisterFailed } from './pages/register-failed-page';
 import { RegisterSuccess } from './pages/register-success-page';
+
+import { Hostpage } from './pages/host-page';
+
 
 const sagaMiddleware = createSagaMiddleware()
 const potlukkStore = createStore(lukkerUserReducer, applyMiddleware(sagaMiddleware));// now the sagas will watch over the dispatch actions
@@ -29,8 +33,12 @@ function App() {
           <Route path='/registration' element={<RegisterPage/>}/>
           <Route path='/guest' element={<PotlukkDetailGuest/>}/>
           <Route path='/host' element={<PotlukkDetailHost/>}/>
+
           <Route path="/error" element={<RegisterFailed/>}/>
           <Route path="/success" element={<RegisterSuccess/>}/>
+
+          <Route path='/createPotlukk' element={<Hostpage/>}/>
+
         </Routes>
       </BrowserRouter>
     </Provider>

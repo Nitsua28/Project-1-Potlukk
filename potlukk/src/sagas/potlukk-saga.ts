@@ -1,6 +1,8 @@
 import { takeEvery, put, all, select } from "@redux-saga/core/effects";
-import { createUser, getAllUsers, createPotlukk, verifyUser} from "../api/potlukk-requests";
-import { CreateUserAction, LukkerUserInfo, Potlukk, RequestCreatePotlukk, RequestGetUsersAction, SignInUser } from "../reducers/potlukk-reducer";
+
+import { createUser, getAllUsers, createPotlukk, verifyUser, sendInvite } from "../api/potlukk-requests";
+import { RequestInviteButtonAction } from "../reducers/invite-reducer";
+import { CreateUserAction, LukkerUserInfo, Potlukk, RequestCreatePotlukk, RequestGetUsersAction, SignInUser  } from "../reducers/potlukk-reducer";
 
 
 //worker sagas
@@ -26,10 +28,8 @@ export function* signInUser(action:SignInUser){
     }catch(e){
         yield put({type:"ERROR", payload:true});
 
+    }
 }
-
-}
-
 
 export function* getUsers(action: RequestGetUsersAction){
     try{
@@ -52,6 +52,17 @@ export function* createPotlukkByForm(action: RequestCreatePotlukk){
     }
 }
 
+export function* inviteLukker(action: RequestInviteButtonAction){
+    try{
+        
+        // const potlukk: Potlukk  = yield sendInvite();
+        // yield put({type:"ADD_POTLUKK",payload: });
+    }catch(e){
+        yield put({type:"ERROR", payload: e, error:true
+        });
+
+    }
+}
 //watcher sagas
 export function* watchCreateUserData(){
     yield takeEvery("CREATE_USER", createUserData)

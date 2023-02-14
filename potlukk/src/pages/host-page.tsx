@@ -7,6 +7,7 @@ import { PotlukkCreationInputState } from "../reducers/potluck-form-reducer";
 import Calendar from 'react-calendar'
 import "../stylesheets/style.css"
 import 'react-calendar/dist/Calendar.css';
+import { Invitation_Component } from "../components/invitation_component";
 export function Hostpage(){
     
     const selector = useSelector((store: LukkerUserState) => store)
@@ -29,30 +30,17 @@ export function Hostpage(){
 
     const sendDispatch = useDispatch()<PotlukkActions>
     const [tagInput, setTagInput]= useState("")
-    const [form,setForm] = useState("");
     
-    let listArray: LukkerUserInfo[] = [];
-    (form !== "") ?
-    listArray = selector.userList.filter((item) => item.username === form ) :
-    listArray = selector.userList
-
-
     
     
     // function filterUsers(){
     //     tempArray = selector.userList.filter((item) => item.username === form)
     // }
     
+
+    
     const date = new Date(FormState.details.time * 1000)
-    useEffect(()=>{ // use effect for rest gets/ constant display
-      
-        (async ()=>{
-            
-            await sendDispatch({type: "REQUEST_GET_USERS", payload: form}); // await since it rreturns a promise
-            
-        })();
-        
-      },[]);
+
 
     return(
         <>
@@ -97,29 +85,14 @@ export function Hostpage(){
                     <div className="createbutton-container">
                         <button onClick={() => sendDispatch({type: "REQUEST_CREATE_POTLUKK", payload: FormState})}>CREATE</button>
                     </div>
+
                 </div>
                 <div className="invite-lukkers-container">
-                    <div className="lukkers-input-container">
-                        <div className="searchbutton-container">
-                            {/* <button onClick={()=>()}>search</button> */}
-                        </div>
-                        <div className="search-container">
-                        <input placeholder="username" onChange={(e) =>setForm(e.target.value)} ></input>
-                        </div>
-                    </div>
-                    <div className="invite-container">
-                        <div className="inviteHeader-container">List of Users</div>
-                        <div className="inviteResults-container">
-                            <ul>
-                                {listArray.map((item)=><li key={item.username}>{item.username}{item.fname} {item.lname}<button >invite</button></li>)}
-                            </ul>
-                        </div>
-                    </div>
-                    <div className="invited-container">
-                        <div className="invitedHeader-container">Invited Users</div>
-                        <div className="invitedResults-container"></div>
-                    </div>
+
+                    <Invitation_Component/>
+
                 </div>
+                
             </div>
         </>
     )

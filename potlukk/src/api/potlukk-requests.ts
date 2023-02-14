@@ -1,6 +1,7 @@
 import { SignInForm } from "../pages/signin-page";
 import { CreateUserForm, LukkerUserInfo, Potlukk } from "../reducers/potlukk-reducer";
 import { PotlukkCreationInputState } from "../reducers/potluck-form-reducer";
+import { InvitationSendInput } from "../reducers/invite-reducer";
 
 import { InvitationSendInputState } from "../reducers/invite-reducer";
 
@@ -83,7 +84,8 @@ export async function createPotlukk(form: PotlukkCreationInputState):Promise<Pot
     return potlukk
 }
 
-export async function sendInvite(form: InvitationSendInputState):Promise<Potlukk>{
+
+export async function sendInvite(form: InvitationSendInput):Promise<Potlukk>{
 
   const query = `mutation SendInvite($input: InvitationSendInput!){
     sendInvite(input: $input){
@@ -124,8 +126,9 @@ export async function sendInvite(form: InvitationSendInputState):Promise<Potlukk
           }
         }
     }
-  }
-    `
+
+  }`
+
   const variables = {input:form}
   const body = JSON.stringify({query:query,variables:variables})
 

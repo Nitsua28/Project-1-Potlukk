@@ -8,6 +8,7 @@ const testState:LukkerUserState ={
         lname:"",
         allergies:[]
     },
+    potlukkList: [],
     userList:[],
     potlukkList: [],
     error:false,

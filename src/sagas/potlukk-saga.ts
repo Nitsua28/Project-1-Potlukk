@@ -57,9 +57,8 @@ export function* createPotlukkByForm(action: RequestCreatePotlukk){
         
         const potlukk: Potlukk  = yield createPotlukk(action.payload);
         const invited: LukkerUserInfo[] = yield select(store => store.invited)
-        
+
         yield invited.forEach((item)=>  {
-            console.log(potlukk.potlukkId)
             sendInvite(
             {
             potlukkId: potlukk.potlukkId,

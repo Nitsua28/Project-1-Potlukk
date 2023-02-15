@@ -77,7 +77,7 @@ export async function createPotlukk(form: PotlukkCreationInputState):Promise<Pot
 
     const httpResponse = await fetch("http://127.0.0.1:8000/graphql", {method:"POST", body, headers:{"Content-Type":"application/json"}});
     const responseBody = await httpResponse.json();
-    const potlukk:Potlukk = responseBody.data;
+    const potlukk:Potlukk = responseBody.data.createPotlukk;
     return potlukk
 }
 

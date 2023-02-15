@@ -82,7 +82,7 @@ export type LukkerUserState = {
 
     potlukkList: Potlukk[]
     invited: LukkerUserInfo[]
-
+    filteredPotlukkList: Potlukk[]
 }
 
 export type Potlukk = {
@@ -106,6 +106,7 @@ export type SetUser = {type:"SET_USER", payload:LukkerUserInfo}
 export type GetUserByName = {type:"GET_USER_BY_NAME", payload: string}
 export type AddPotlukk = {type:"ADD_POTLUKK", payload: Potlukk}
 export type ClearInvited = {type:"CLEAR_INVITED"}
+export type GetPotlukkDetails = {type:"GET_POTLUKK_DETAILS",payload:Potlukk[]}
 //Saga Actions
 export type CreateUserAction = {type:"CREATE_USER", payload:CreateUserForm}
 export type SignInUser = {type:"SIGN_IN_USER", payload:SignInForm}
@@ -114,11 +115,13 @@ export type RequestUserById = {type: "REQUEST_USER_BY_ID", payload: string}
 export type RequestCreatePotlukk = {type: "REQUEST_CREATE_POTLUKK", payload: PotlukkCreationInputState}
 export type RequestEditPotlukk = {type: "REQUEST_EDIT_POTLUKK", payload: PotlukkEditInputState}
 export type Refresh_Users = {type: "REFRESH_USERS"}
+export type RequestPotlukkDetailsAction = {type:"REQUEST_POTLUKK_DETAILS"}
 // Action types
 export type PotlukkActions = CreateUserAction | GetUsersAction | AddUserAction | SetErrorAction
         | ClearErrorAction | ClearUserAdded | SetUser | SignInUser |
         RequestGetUsersAction | GetUserByName | Refresh_Users | AddPotlukk | RequestCreatePotlukk
-        |InviteUserAction | DeleteInvitedAction | RequestEditPotlukk | ClearInvited;
+        |InviteUserAction | DeleteInvitedAction | RequestEditPotlukk | ClearInvited | RequestPotlukkDetailsAction 
+        | GetPotlukkDetails;
 
 const initialState: LukkerUserState = {
     currentUser: {
@@ -133,13 +136,22 @@ const initialState: LukkerUserState = {
     error:false,
     newUserAdded:false,
     potlukkList: [],
-    invited: []
+    invited: [],
+    filteredPotlukkList: []
 }
 
 export function lukkerUserReducer(state: LukkerUserState = initialState, action: PotlukkActions):LukkerUserState{
     const nextState: LukkerUserState = JSON.parse(JSON.stringify(state));
 
     switch(action.type){
+        case "GET_POTLUKK_DETAILS":{
+            const result = action.payload.filter(filterByAttending)
+            localStorage.setItem("filteredList",JSON.stringify(result))
+            //console.log(result)
+            nextState.filteredPotlukkList = result
+            return nextState
+        }
+
         case "ADD_USER":{
             nextState.userList.push(action.payload)
             nextState.newUserAdded = true
@@ -199,8 +211,19 @@ export function lukkerUserReducer(state: LukkerUserState = initialState, action:
             return nextState
     }
 
+    function filterByAttending(potlukk:Potlukk){
+        const result = potlukk.host.userId === Number(localStorage.getItem("userid")) || 
+        potlukk.invitations.some(e=>e.potlukker.userId === Number(localStorage.getItem("userid")))
+        //console.log(nextState.currentUser)
+        return result
+    }
 
 }
+
+
+
+
+
 
 
 

@@ -1,8 +1,8 @@
 import { takeEvery, put, all, select } from "@redux-saga/core/effects";
 
-import { createUser, getAllUsers, createPotlukk, verifyUser, getUserById, sendInvite, editPotlukk } from "../api/potlukk-requests";
+import { createUser, getAllUsers, createPotlukk, verifyUser, getUserById, sendInvite, editPotlukk, getPotlukkuserDetails } from "../api/potlukk-requests";
 import { CreateUserAction, LukkerUserInfo, Potlukk, RequestCreatePotlukk,
-     RequestGetUsersAction, SignInUser, RequestUserById, InvitationSendInput, RequestEditPotlukk  } from "../reducers/potlukk-reducer";
+     RequestGetUsersAction, SignInUser, RequestUserById, InvitationSendInput, RequestEditPotlukk, RequestPotlukkDetailsAction  } from "../reducers/potlukk-reducer";
 
 
 //worker sagas
@@ -103,7 +103,22 @@ export function* editPotlukkByForm(action: RequestEditPotlukk){
 
 //     }
 // }
+
+export function* getPotlukkDetails(action:RequestPotlukkDetailsAction){
+    try{
+        const lukkers: Potlukk[]  = yield getPotlukkuserDetails();
+        yield put({type:"GET_POTLUKK_DETAILS",payload: lukkers});
+    }catch(e){
+        yield put({type:"ERROR", payload: e, error:true
+        });
+    }
+}
+
 //watcher sagas
+export function* watchGetPotlukkDetails(){
+    yield takeEvery("REQUEST_POTLUKK_DETAILS",getPotlukkDetails)
+}
+
 export function* watchCreateUserData(){
     yield takeEvery("CREATE_USER", createUserData)
 }
@@ -132,6 +147,7 @@ export function* rootSaga(){
 
     yield all([watchCreateUserData(), watchGetUsers(),
          watchCreatePotlukk(), watchSignInUser(),
-         watchGetUserByIdInvite(), watcheditPotlukkByForm()]) // an array of watcher sagas
+         watchGetUserByIdInvite(), watcheditPotlukkByForm(),
+         watchGetPotlukkDetails()]) // an array of watcher sagas
 }
 

@@ -133,6 +133,28 @@ export async function editPotlukk(form: PotlukkEditInputState):Promise<Potlukk>{
   return potlukk
 }
 
+export async function getPotlukkuserDetails():Promise<Potlukk[]>{
+  const query = `query getPotlukkUserDetails {
+    potlukks {
+      host {
+        userId
+      }
+      invitations {
+        potlukker {
+          userId
+        }
+        status
+      }
+      potlukkId
+    }
+  }`
+
+  const body = JSON.stringify({query:query})
+  const httpResponse = await fetch("http://127.0.0.1:8000/graphql", {method:"POST", body, headers:{"Content-Type":"application/json"}});
+  const responseBody = await httpResponse.json();
+  const potlukk:Potlukk[] = responseBody.data.potlukks;
+  return potlukk
+}
 
 export async function sendInvite(form: InvitationSendInput):Promise<Potlukk>{
 

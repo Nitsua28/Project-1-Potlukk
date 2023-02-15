@@ -1,8 +1,8 @@
 import { takeEvery, put, all, select } from "@redux-saga/core/effects";
 
-import { createUser, getAllUsers, createPotlukk, verifyUser, getUserById, sendInvite } from "../api/potlukk-requests";
+import { createUser, getAllUsers, createPotlukk, verifyUser, getUserById, sendInvite, editPotlukk } from "../api/potlukk-requests";
 import { CreateUserAction, LukkerUserInfo, Potlukk, RequestCreatePotlukk,
-     RequestGetUsersAction, SignInUser, RequestUserById, InvitationSendInput  } from "../reducers/potlukk-reducer";
+     RequestGetUsersAction, SignInUser, RequestUserById, InvitationSendInput, RequestEditPotlukk  } from "../reducers/potlukk-reducer";
 
 
 //worker sagas
@@ -64,8 +64,28 @@ export function* createPotlukkByForm(action: RequestCreatePotlukk){
             potlukkId: potlukk.potlukkId,
             potlukkerId: item.userId
         })})
-        
+        yield put({type:"CLEAR_INVITED"});
         yield put({type:"ADD_POTLUKK",payload: potlukk});
+    }catch(e){
+        yield put({type:"ERROR", payload: e, error:true
+        });
+    }
+}
+
+export function* editPotlukkByForm(action: RequestEditPotlukk){
+
+    try{
+        
+        const potlukk: Potlukk  = yield editPotlukk(action.payload);
+        // const invited: LukkerUserInfo[] = yield select(store => store.invited)
+
+        // yield invited.forEach((item)=>  {
+        //     sendInvite(
+        //     {
+        //     potlukkId: potlukk.potlukkId,
+        //     potlukkerId: item.userId
+        // })})
+        
     }catch(e){
         yield put({type:"ERROR", payload: e, error:true
         });
@@ -91,6 +111,7 @@ export function* watchCreateUserData(){
 export function* watchSignInUser(){
     yield takeEvery("SIGN_IN_USER", signInUser)
 }
+
 export function* watchGetUsers(){
     yield takeEvery("REQUEST_GET_USERS", getUsers)
 }
@@ -98,13 +119,19 @@ export function* watchGetUsers(){
 export function* watchCreatePotlukk(){
     yield takeEvery("REQUEST_CREATE_POTLUKK", createPotlukkByForm)
 }
+
 export function* watchGetUserByIdInvite(){
     yield takeEvery("REQUEST_USER_BY_ID", getUserByIdFormInvite)
+}
+
+export function* watcheditPotlukkByForm(){
+    yield takeEvery("REQUEST_EDIT_POTLUKK", editPotlukkByForm)
 }
 //root saga
 export function* rootSaga(){
 
     yield all([watchCreateUserData(), watchGetUsers(),
-         watchCreatePotlukk(), watchSignInUser(), watchGetUserByIdInvite()]) // an array of watcher sagas
+         watchCreatePotlukk(), watchSignInUser(),
+         watchGetUserByIdInvite(), watcheditPotlukkByForm()]) // an array of watcher sagas
 }
 

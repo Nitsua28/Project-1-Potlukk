@@ -5,14 +5,15 @@ import { PotlukkFormReducer } from "../reducers/potluck-form-reducer"
 import { PotlukkActions ,LukkerUserState, PotlukkStatus, LukkerUserInfo } from "../reducers/potlukk-reducer"
 import { PotlukkCreationInputState } from "../reducers/potluck-form-reducer";
 import Calendar from 'react-calendar'
-import "../stylesheets/style.css"
+import "../stylesheets/hostpage-style.css"
 import 'react-calendar/dist/Calendar.css';
 import { Invitation_Component } from "../components/invitation_component";
 import { NavBar } from "./navbar";
+import { useNavigate } from "react-router-dom";
 export function Hostpage(){
     
     const lukkerSelector = useSelector((store: LukkerUserState) => store)
-  
+    const router = useNavigate();
     const initialState: PotlukkCreationInputState = {
         details: {
             title: "",
@@ -88,7 +89,11 @@ export function Hostpage(){
                         </div>
                     </div>
                     <div className="createbutton-container">
-                        <button onClick={() => sendDispatch({type: "REQUEST_CREATE_POTLUKK", payload: FormState})}>CREATE</button>
+                        <button onClick={() => 
+                        {
+                            sendDispatch({type: "REQUEST_CREATE_POTLUKK", payload: FormState})
+                            router("/home");
+                            }}>CREATE</button>
                     </div>
 
                 </div>

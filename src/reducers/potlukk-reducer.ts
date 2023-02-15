@@ -1,4 +1,5 @@
 import { SignInForm } from "../pages/signin-page";
+import { PotlukkEditInputState } from "./potluck-edit-form-reducer";
 import { PotlukkCreationInputState } from "./potluck-form-reducer";
 export enum PotlukkStatus {
     SCHEDULED,
@@ -85,7 +86,7 @@ export type LukkerUserState = {
 }
 
 export type Potlukk = {
-    potlukkId: number
+    potlukkId: number,
     details: PotlukkCreationInputState,
     host: LukkerUserInfo,
     invitations: Invitation[],
@@ -104,18 +105,20 @@ export type ClearUserAdded = {type:"CLEAR_USER_ADDED"}
 export type SetUser = {type:"SET_USER", payload:LukkerUserInfo}
 export type GetUserByName = {type:"GET_USER_BY_NAME", payload: string}
 export type AddPotlukk = {type:"ADD_POTLUKK", payload: Potlukk}
+export type ClearInvited = {type:"CLEAR_INVITED"}
 //Saga Actions
 export type CreateUserAction = {type:"CREATE_USER", payload:CreateUserForm}
 export type SignInUser = {type:"SIGN_IN_USER", payload:SignInForm}
 export type RequestGetUsersAction = {type:"REQUEST_GET_USERS", payload: string}
 export type RequestUserById = {type: "REQUEST_USER_BY_ID", payload: string}
 export type RequestCreatePotlukk = {type: "REQUEST_CREATE_POTLUKK", payload: PotlukkCreationInputState}
+export type RequestEditPotlukk = {type: "REQUEST_EDIT_POTLUKK", payload: PotlukkEditInputState}
 export type Refresh_Users = {type: "REFRESH_USERS"}
 // Action types
 export type PotlukkActions = CreateUserAction | GetUsersAction | AddUserAction | SetErrorAction
         | ClearErrorAction | ClearUserAdded | SetUser | SignInUser |
         RequestGetUsersAction | GetUserByName | Refresh_Users | AddPotlukk | RequestCreatePotlukk
-        |InviteUserAction | DeleteInvitedAction;
+        |InviteUserAction | DeleteInvitedAction | RequestEditPotlukk | ClearInvited;
 
 const initialState: LukkerUserState = {
     currentUser: {
@@ -186,6 +189,10 @@ export function lukkerUserReducer(state: LukkerUserState = initialState, action:
         case "DELETE_INVITED_ACTION":{
             let users: LukkerUserInfo[] = nextState.invited.filter((item)=>item.userId !== Number(action.payload));
             nextState.invited = users
+            return nextState
+        }
+        case "CLEAR_INVITED":{
+            nextState.invited = []
             return nextState
         }
         default:

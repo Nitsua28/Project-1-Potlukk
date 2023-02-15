@@ -44,7 +44,7 @@ export function Invitation_Component(){
             <div className="inviteResults-container">
                 <ul>
                     {listArray.map(
-                        (item)=><li key={item.username}>{item.username}{item.fname} {item.lname}
+                        (item)=><li key={item.username}>{item.username}{item.fname} {item.lname} {}
                         <button onClick={() =>sendDispatch({type: "INVITE_USER_ACTION",
                          payload: item.userId.toString()})}>invite</button></li>)}
                 </ul>

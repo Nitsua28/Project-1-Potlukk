@@ -1,4 +1,5 @@
 import React from 'react';
+import { AlertProvider } from 'react-alert-with-buttons';
 import ReactDOM from 'react-dom/client';
 import App from './App';
 
@@ -7,6 +8,9 @@ const root = ReactDOM.createRoot(
 );
 root.render(
   <React.StrictMode>
-    <App />
+    <AlertProvider>
+      <App />
+    </AlertProvider>
+    
   </React.StrictMode>
 );

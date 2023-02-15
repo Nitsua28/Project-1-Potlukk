@@ -32,6 +32,7 @@ export function NavBar(){
                 <li><div><Link to="/host">Host</Link></div></li>
                 <li><div><Link to="/guest">Discover</Link></div></li>
                 <li><div><Link to="/">Settings</Link></div></li>
+                <li><div><Link to="/createPotlukk">createPotlukk</Link></div></li>
                 <li id="logout"><button onClick={logOut}>Log out</button></li>
             </ul>
         </div>

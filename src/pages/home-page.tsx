@@ -10,7 +10,7 @@ export function HomePage(){
 
     const router = useNavigate()
     const currentUserState = useSelector((store:LukkerUserState) => store.currentUser);
-    if(currentUserState.userId === 0){
+    if(localStorage.getItem("userid") === "0"){
         alert("Please login or signup to access home page")
         router("/")
     }

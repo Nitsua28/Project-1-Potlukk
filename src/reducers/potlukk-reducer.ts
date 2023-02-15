@@ -72,6 +72,7 @@ export type InvitationSendInput = {
     potlukkId: number,
     potlukkerId: number
 }
+//state held in this reducer
 export type LukkerUserState = {
     currentUser: LukkerUserInfo
     userList: LukkerUserInfo[]
@@ -168,6 +169,13 @@ export function lukkerUserReducer(state: LukkerUserState = initialState, action:
         }
         case "SET_USER":{
             nextState.currentUser = action.payload
+            if(action.payload.userId===0){
+                localStorage.removeItem("username")
+                localStorage.removeItem("userid")
+            }else{
+                localStorage.setItem("username",action.payload.username)
+                localStorage.setItem("userid",action.payload.userId.toString())
+            }
             return nextState
         }
         case "INVITE_USER_ACTION":{

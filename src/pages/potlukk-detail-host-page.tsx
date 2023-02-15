@@ -13,10 +13,11 @@ import { Invitation_Component } from "../components/invitation_component";
 import { Attendees_Component } from "../components/attendees_component";
 //remember to take in putlukk object as props
 //prop typing error remember
-export function PotlukkDetailHost(potlukkProps: Potlukk){
+export function PotlukkDetailHost(potlukkProps:any){
   const sendDispatch = useDispatch()<PotlukkActions>
-  const potlukkId = potlukkProps.potlukkId;
+  const potlukkId = potlukkProps.id;
   const selector = useSelector((store: LukkerUserState) => store)
+  console.log(selector.currentPotluck)
   const details = selector.currentPotluck.details.details
   const initialState: PotlukkEditInputState = {
           potlukkId: potlukkId,

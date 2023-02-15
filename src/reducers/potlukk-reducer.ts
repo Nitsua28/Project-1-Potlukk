@@ -159,18 +159,7 @@ export const initialState: LukkerUserState = {
           ]
         },
         invitations: [
-          {
-            status: InvitationStatus.PENDING,
-            potlukker: {
-              userId: 56452,
-              username: "Host",
-              fname: "Joe",
-              lname: "Biden",
-              allergies: [
-                "MILK"
-              ]
-            }
-          }
+
         ],
         dishes: []
       },
@@ -242,6 +231,7 @@ export function lukkerUserReducer(state: LukkerUserState = initialState, action:
         }
         case "SET_CURRENT_POTLUKK":{
             nextState.currentPotluck = action.payload
+
             return nextState
         }
         default:

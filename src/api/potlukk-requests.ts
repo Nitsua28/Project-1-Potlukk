@@ -175,7 +175,7 @@ export async function getPotlukkById(form: string):Promise<Potlukk>{
         }
     }
   }`
-  const variables = {input:form}
+  const variables = {input:Number(form)}
   const body = JSON.stringify({query:query,variables:variables})
 
   const httpResponse = await fetch("http://127.0.0.1:8000/graphql", {method:"POST", body, headers:{"Content-Type":"application/json"}});

@@ -2,7 +2,7 @@ import { takeEvery, put, all, select } from "@redux-saga/core/effects";
 
 import { createUser, getAllUsers, createPotlukk, verifyUser, getUserById, sendInvite, editPotlukk, getPotlukkById } from "../api/potlukk-requests";
 import { CreateUserAction, LukkerUserInfo, Potlukk, RequestCreatePotlukk,
-     RequestGetUsersAction, SignInUser, RequestUserById, InvitationSendInput, RequestEditPotlukk, RequestGetPotlukkById  } from "../reducers/potlukk-reducer";
+     RequestGetUsersAction, SignInUser, RequestUserById, RequestEditPotlukk, RequestGetPotlukkById, SetCurrentPotlukk  } from "../reducers/potlukk-reducer";
 
 
 //worker sagas
@@ -67,8 +67,7 @@ export function* createPotlukkByForm(action: RequestCreatePotlukk){
         yield put({type:"CLEAR_INVITED"});
         yield put({type:"ADD_POTLUKK",payload: potlukk});
     }catch(e){
-        yield put({type:"ERROR", payload: e, error:true
-        });
+        yield put({type:"ERROR", payload: e, error:true});
     }
 }
 
@@ -102,7 +101,7 @@ export function* getPotlukkByIdForm(action: RequestGetPotlukkById){
     try{
         
         const potlukk: Potlukk  = yield getPotlukkById(action.payload);
-        yield put({type:"SET_CURRENT_POTLUCK", payload: potlukk});
+        yield put({type:"SET_CURRENT_POTLUKK", payload: potlukk});
     }catch(e){
         yield put({type:"ERROR", payload: e, error:true
         });

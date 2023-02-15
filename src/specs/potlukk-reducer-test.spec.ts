@@ -14,7 +14,8 @@ const testState:LukkerUserState ={
     invited: [],
 
     error:false,
-    newUserAdded:false
+    newUserAdded:false,
+    filteredPotlukkList: []
 }
 
 const testU1:LukkerUserInfo ={

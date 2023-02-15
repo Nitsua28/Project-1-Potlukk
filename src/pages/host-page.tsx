@@ -24,7 +24,7 @@ export function Hostpage(){
             time: 0,
             tags: []
         },
-        hostId: lukkerSelector.currentUser.userId
+        hostId: Number(localStorage.getItem("userid"))
 
     }
     

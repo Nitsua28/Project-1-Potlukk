@@ -47,6 +47,7 @@ export function Hostpage(){
     return(
         <>
             <NavBar/>
+            <div>{FormState.hostId}</div>
             <div className="container">
                 <div className="calendar-container">
                     <div className="date-input-container">
@@ -73,6 +74,7 @@ export function Hostpage(){
                     </div>
                     <div className="isPublic-container">
                         <input placeholder="public" type="checkbox" onChange={() =>FormState.details.isPublic ? dispatchForm({type:"UPDATE_ISPUBLIC", payload: false}) : dispatchForm({type:"UPDATE_ISPUBLIC", payload: true})}></input>
+                        <div>Make Public</div>
                     </div>
                     <div className="tags-container">
                         <div className="tags-input-container">

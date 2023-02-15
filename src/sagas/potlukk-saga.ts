@@ -1,7 +1,8 @@
 import { takeEvery, put, all, select } from "@redux-saga/core/effects";
 
-import { createUser, getAllUsers, createPotlukk, verifyUser, getUserById } from "../api/potlukk-requests";
-import { CreateUserAction, LukkerUserInfo, Potlukk, RequestCreatePotlukk, RequestGetUsersAction, SignInUser, RequestUserById  } from "../reducers/potlukk-reducer";
+import { createUser, getAllUsers, createPotlukk, verifyUser, getUserById, sendInvite } from "../api/potlukk-requests";
+import { CreateUserAction, LukkerUserInfo, Potlukk, RequestCreatePotlukk,
+     RequestGetUsersAction, SignInUser, RequestUserById, InvitationSendInput  } from "../reducers/potlukk-reducer";
 
 
 //worker sagas
@@ -51,9 +52,19 @@ export function* getUserByIdFormInvite(action: RequestUserById){
 }
 
 export function* createPotlukkByForm(action: RequestCreatePotlukk){
+
     try{
         
         const potlukk: Potlukk  = yield createPotlukk(action.payload);
+        const invited: LukkerUserInfo[] = yield select(store => store.invited)
+
+        yield invited.forEach((item)=>  {
+            sendInvite(
+            {
+            potlukkId: potlukk.potlukkId,
+            potlukkerId: item.userId
+        })})
+        
         yield put({type:"ADD_POTLUKK",payload: potlukk});
     }catch(e){
         yield put({type:"ERROR", payload: e, error:true

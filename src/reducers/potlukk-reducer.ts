@@ -67,6 +67,10 @@ export type Invitation = {
     potlukker: LukkerUserInfo,
 }
 
+export type InvitationSendInput = {
+    potlukkId: number,
+    potlukkerId: number
+}
 export type LukkerUserState = {
     currentUser: LukkerUserInfo
     userList: LukkerUserInfo[]
@@ -74,12 +78,13 @@ export type LukkerUserState = {
     error: boolean
     newUserAdded: boolean
 
-    potlukkList: PotlukkCreationInputState[]
+    potlukkList: Potlukk[]
     invited: LukkerUserInfo[]
 
 }
 
 export type Potlukk = {
+    potlukkId: number
     details: PotlukkCreationInputState,
     host: LukkerUserInfo,
     invitations: Invitation[],
@@ -97,7 +102,7 @@ export type ClearErrorAction = {type:"CLEAR_ERROR"}
 export type ClearUserAdded = {type:"CLEAR_USER_ADDED"}
 export type SetUser = {type:"SET_USER", payload:LukkerUserInfo}
 export type GetUserByName = {type:"GET_USER_BY_NAME", payload: string}
-export type AddPotlukk = {type:"ADD_POTLUKK", payload: PotlukkCreationInputState}
+export type AddPotlukk = {type:"ADD_POTLUKK", payload: Potlukk}
 //Saga Actions
 export type CreateUserAction = {type:"CREATE_USER", payload:CreateUserForm}
 export type SignInUser = {type:"SIGN_IN_USER", payload:SignInForm}

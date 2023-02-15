@@ -1,38 +1,51 @@
 
-import { Potlukk, PotlukkActions } from "../reducers/potlukk-reducer";
+import { LukkerUserState, Potlukk, PotlukkActions } from "../reducers/potlukk-reducer";
 import Calendar from 'react-calendar';
 //import "../stylesheets/potlukk-detail-host-style.css"
 import 'react-calendar/dist/Calendar.css';
 import { NavBar } from "./navbar";
 import { useNavigate } from "react-router-dom";
 import { useAlert } from "react-alert-with-buttons";
-import { useReducer } from "react";
-import { useDispatch } from "react-redux";
+import { useEffect, useReducer } from "react";
+import { useDispatch, useSelector } from "react-redux";
 import { PotlukkEditFormReducer, PotlukkEditInputState } from "../reducers/potluck-edit-form-reducer";
 import { Invitation_Component } from "../components/invitation_component";
+import { Attendees_Component } from "../components/attendees_component";
 //remember to take in putlukk object as props
 //prop typing error remember
 export function PotlukkDetailHost(potlukkProps: Potlukk){
-     const propsDetails = potlukkProps.details.details;
-    
-    const initialState: PotlukkEditInputState = {
-          potlukkId: potlukkProps.potlukkId,
-          title: propsDetails.title,
-          location: propsDetails.location,
-          status: propsDetails.status,
-          description: propsDetails.description,
-          isPublic: propsDetails.isPublic,
-          time: propsDetails.time,
-          tags: propsDetails.tags
+  const sendDispatch = useDispatch()<PotlukkActions>
+  const potlukkId = potlukkProps.potlukkId;
+  const selector = useSelector((store: LukkerUserState) => store)
+  const details = selector.currentPotluck.details.details
+  const initialState: PotlukkEditInputState = {
+          potlukkId: potlukkId,
+          title: details.title,
+          location: details.location,
+          status: details.status,
+          description: details.description,
+          isPublic: details.isPublic,
+          time: details.time,
+          tags: details.tags
 
   }
+  useEffect(()=>{ // use effect for rest gets/ constant display
+      
+    (async ()=>{
+        
+        await sendDispatch({type: "REQUEST_GET_POTLUKK_BY_ID", payload: potlukkId.toString()}); // await since it rreturns a promise
+        
+    })();
+    
+  },[]);
+  
   const alert = useAlert();
   const router = useNavigate();
   
   const [FormState, dispatchForm] = useReducer(PotlukkEditFormReducer, initialState)
 
   let date = new Date(FormState.time * 1000)
-  const sendDispatch = useDispatch()<PotlukkActions>
+
 
     return (
     <>
@@ -109,12 +122,7 @@ export function PotlukkDetailHost(potlukkProps: Potlukk){
             <div className="create-dish-container"></div>
         </div>
         <div className="attendee-container">
-          <h1>Attendees</h1>
-          <div>
-            {potlukkProps.invitations.map(
-              (item) => <li key={item.potlukker.userId}> {item.potlukker.username} {item.status}</li>
-            )}
-          </div>
+          <Attendees_Component />
         </div>
         <div>
           <h1>Invite</h1>

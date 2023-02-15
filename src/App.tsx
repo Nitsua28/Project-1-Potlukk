@@ -8,7 +8,7 @@ import { PotlukkDetailGuest} from './pages/potlukk-detail-guess-page';
 import { Provider } from 'react-redux';
 import createSagaMiddleware from '@redux-saga/core';
 import { createStore, applyMiddleware } from '@reduxjs/toolkit';
-import { lukkerUserReducer, Potlukk } from './reducers/potlukk-reducer';
+import { InvitationStatus, lukkerUserReducer, Potlukk } from './reducers/potlukk-reducer';
 import { rootSaga } from './sagas/potlukk-saga';
 import { NavBar } from './pages/navbar';
 import { RegisterFailed } from './pages/register-failed-page';
@@ -47,7 +47,20 @@ const exampleProps: Potlukk=
       "MILK"
     ]
   },
-  invitations: [],
+  invitations: [
+    {
+      status: InvitationStatus.PENDING,
+      potlukker: {
+        userId: 56452,
+        username: "Host",
+        fname: "Joe",
+        lname: "Biden",
+        allergies: [
+          "MILK"
+        ]
+      }
+    }
+  ],
   dishes: []
 }
 function App() {

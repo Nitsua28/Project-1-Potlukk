@@ -1,4 +1,4 @@
-import { LukkerUserInfo, lukkerUserReducer, LukkerUserState, Potlukk } from "../reducers/potlukk-reducer"
+import { InvitationStatus, LukkerUserInfo, lukkerUserReducer, LukkerUserState, Potlukk } from "../reducers/potlukk-reducer"
 import {PotlukkCreationInputState} from "../reducers/potluck-form-reducer"
 
 const testState:LukkerUserState ={
@@ -9,6 +9,47 @@ const testState:LukkerUserState ={
         lname:"",
         allergies:[]
     },
+    currentPotluck: {
+        potlukkId: 178540,
+        details: {
+          details:{
+          title: "chicken",
+          location: "atPotlukkk",
+          status: "SCHEDULED",
+          description: "peiece of meat",
+          isPublic: false,
+          time: 9,
+          tags: [
+            "akdna"
+          ]
+        },
+        hostId: 56452
+      },
+        host: {
+          userId: 56452,
+          username: "Host",
+          fname: "Joe",
+          lname: "Biden",
+          allergies: [
+            "MILK"
+          ]
+        },
+        invitations: [
+          {
+            status: InvitationStatus.PENDING,
+            potlukker: {
+              userId: 56452,
+              username: "Host",
+              fname: "Joe",
+              lname: "Biden",
+              allergies: [
+                "MILK"
+              ]
+            }
+          }
+        ],
+        dishes: []
+      },
     potlukkList: [],
     userList:[],
     invited: [],

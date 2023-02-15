@@ -133,6 +133,56 @@ export async function editPotlukk(form: PotlukkEditInputState):Promise<Potlukk>{
   return potlukk
 }
 
+export async function getPotlukkById(form: string):Promise<Potlukk>{
+
+  const query = `query getPoutlukkById($input: Int){
+    potlukks(potlukkId: $input){
+      ...on Potlukk{
+        potlukkId
+        details{
+          title
+          location
+          status
+          description
+          isPublic
+          time
+          tags
+        }
+        host{
+          userId
+          username
+          fname
+          lname
+          allergies
+        }
+        invitations{
+          status
+          potlukker{
+            userId
+            username
+            fname
+            lname
+            allergies
+          }
+        }
+          dishes{
+            name
+            description
+            broughtBy
+            serves
+            allergens
+          }
+        }
+    }
+  }`
+  const variables = {input:form}
+  const body = JSON.stringify({query:query,variables:variables})
+
+  const httpResponse = await fetch("http://127.0.0.1:8000/graphql", {method:"POST", body, headers:{"Content-Type":"application/json"}});
+  const responseBody = await httpResponse.json();
+  const potlukk:Potlukk = responseBody.data.potlukks;
+  return potlukk
+}
 
 export async function sendInvite(form: InvitationSendInput):Promise<Potlukk>{
 

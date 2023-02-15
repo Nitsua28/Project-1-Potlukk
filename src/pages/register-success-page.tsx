@@ -1,15 +1,17 @@
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
-import { PotlukkActions } from "../reducers/potlukk-reducer";
+import { LukkerUserState, PotlukkActions } from "../reducers/potlukk-reducer";
 
 
 export function RegisterSuccess(){
 
     const dispatch = useDispatch()<PotlukkActions>;
+    const currentUser = useSelector((store:LukkerUserState) => store.currentUser);
     const router = useNavigate()
 
     function returnToRoot(){
         dispatch({type:"CLEAR_USER_ADDED"})
+        dispatch({type:"SET_USER",payload:currentUser})
         router("/home")
     }
 

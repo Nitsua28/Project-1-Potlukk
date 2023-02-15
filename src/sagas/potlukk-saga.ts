@@ -1,8 +1,8 @@
 import { takeEvery, put, all, select } from "@redux-saga/core/effects";
-
-import { createUser, getAllUsers, createPotlukk, verifyUser, getUserById, sendInvite, editPotlukk, getPotlukkuserDetails } from "../api/potlukk-requests";
+import { createUser, getAllUsers, createPotlukk, verifyUser, getUserById, sendInvite, editPotlukk, getPotlukkById, getPotlukkuserDetails } from "../api/potlukk-requests";
 import { CreateUserAction, LukkerUserInfo, Potlukk, RequestCreatePotlukk,
-     RequestGetUsersAction, SignInUser, RequestUserById, InvitationSendInput, RequestEditPotlukk, RequestPotlukkDetailsAction  } from "../reducers/potlukk-reducer";
+     RequestGetUsersAction, SignInUser, RequestUserById, RequestEditPotlukk, InvitationSendInput, RequestPotlukkDetailsAction, RequestGetPotlukkById, SetCurrentPotlukk  } from "../reducers/potlukk-reducer";
+
 
 
 //worker sagas
@@ -67,8 +67,7 @@ export function* createPotlukkByForm(action: RequestCreatePotlukk){
         yield put({type:"CLEAR_INVITED"});
         yield put({type:"ADD_POTLUKK",payload: potlukk});
     }catch(e){
-        yield put({type:"ERROR", payload: e, error:true
-        });
+        yield put({type:"ERROR", payload: e, error:true});
     }
 }
 
@@ -77,14 +76,19 @@ export function* editPotlukkByForm(action: RequestEditPotlukk){
     try{
         
         const potlukk: Potlukk  = yield editPotlukk(action.payload);
+        const alreadyInvitedIds = potlukk.invitations.map((item) => item.potlukker.userId)
+        const invited: LukkerUserInfo[] = yield select(store => store.invited)
         // const invited: LukkerUserInfo[] = yield select(store => store.invited)
 
-        // yield invited.forEach((item)=>  {
-        //     sendInvite(
-        //     {
-        //     potlukkId: potlukk.potlukkId,
-        //     potlukkerId: item.userId
-        // })})
+        yield invited.forEach((item)=>  {
+            (!(alreadyInvitedIds.some((invitedItem) => invitedItem === item.userId))) &&
+            sendInvite(
+            {
+                potlukkId: potlukk.potlukkId,
+                potlukkerId: item.userId
+            }
+        )
+    })
         
     }catch(e){
         yield put({type:"ERROR", payload: e, error:true
@@ -92,6 +96,17 @@ export function* editPotlukkByForm(action: RequestEditPotlukk){
     }
 }
 
+export function* getPotlukkByIdForm(action: RequestGetPotlukkById){
+
+    try{
+        
+        const potlukk: Potlukk  = yield getPotlukkById(action.payload);
+        yield put({type:"SET_CURRENT_POTLUKK", payload: potlukk});
+    }catch(e){
+        yield put({type:"ERROR", payload: e, error:true
+        });
+    }
+}
 // export function* inviteLukker(action: RequestInviteButtonAction){
 //     try{
         
@@ -142,12 +157,16 @@ export function* watchGetUserByIdInvite(){
 export function* watcheditPotlukkByForm(){
     yield takeEvery("REQUEST_EDIT_POTLUKK", editPotlukkByForm)
 }
+export function* watchGetPotlukkById(){
+    yield takeEvery("REQUEST_GET_POTLUKK_BY_ID", getPotlukkByIdForm)
+}
 //root saga
 export function* rootSaga(){
 
     yield all([watchCreateUserData(), watchGetUsers(),
          watchCreatePotlukk(), watchSignInUser(),
          watchGetUserByIdInvite(), watcheditPotlukkByForm(),
-         watchGetPotlukkDetails()]) // an array of watcher sagas
+         watchGetPotlukkById(), watchGetPotlukkDetails()]) // an array of watcher sagas
+
 }
 

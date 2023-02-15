@@ -51,7 +51,7 @@ export function Invitation_Component(){
             </div>
         </div>
         <div className="invited-container">
-            <div className="invitedHeader-container">Invited Users</div>
+            <div className="invitedHeader-container">Users to Invite</div>
             <div className="invitedResults-container">
                 <ul>
                 {selector.invited.map(

@@ -8,7 +8,7 @@ import { PotlukkDetailGuest} from './pages/potlukk-detail-guess-page';
 import { Provider } from 'react-redux';
 import createSagaMiddleware from '@redux-saga/core';
 import { createStore, applyMiddleware } from '@reduxjs/toolkit';
-import { lukkerUserReducer, Potlukk } from './reducers/potlukk-reducer';
+import { InvitationStatus, lukkerUserReducer, Potlukk } from './reducers/potlukk-reducer';
 import { rootSaga } from './sagas/potlukk-saga';
 import { NavBar } from './pages/navbar';
 import { RegisterFailed } from './pages/register-failed-page';
@@ -21,35 +21,10 @@ const sagaMiddleware = createSagaMiddleware()
 const potlukkStore = createStore(lukkerUserReducer, applyMiddleware(sagaMiddleware));// now the sagas will watch over the dispatch actions
 sagaMiddleware.run(rootSaga)
 
-const exampleProps: Potlukk=
-{
-  potlukkId: 178540,
-  details: {
-    details:{
-    title: "chicken",
-    location: "atPotlukkk",
-    status: "SCHEDULED",
-    description: "peiece of meat",
-    isPublic: false,
-    time: 9,
-    tags: [
-      "akdna"
-    ]
-  },
-  hostId: 56452
-},
-  host: {
-    userId: 56452,
-    username: "Host",
-    fname: "Joe",
-    lname: "Biden",
-    allergies: [
-      "MILK"
-    ]
-  },
-  invitations: [],
-  dishes: []
-}
+const exampleProps:number = 178540;
+
+
+
 function App() {
   return (
     <Provider store={potlukkStore}>
@@ -60,7 +35,7 @@ function App() {
           <Route path='/home' element={<HomePage/>}/>
           <Route path='/registration' element={<RegisterPage/>}/>
           <Route path='/guest' element={<PotlukkDetailGuest/>}/>
-          <Route path='/host' element={<PotlukkDetailHost {...exampleProps}/>}/>
+          <Route path='/host' element={<PotlukkDetailHost id={exampleProps}/>}/>
           {/*bad practice?*/ }
           <Route path="/error" element={<RegisterFailed/>}/>
           <Route path="/success" element={<RegisterSuccess/>}/>

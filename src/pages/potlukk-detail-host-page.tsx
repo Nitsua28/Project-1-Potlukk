@@ -4,26 +4,29 @@ import Calendar from 'react-calendar';
 //import "../stylesheets/potlukk-detail-host-style.css"
 import 'react-calendar/dist/Calendar.css';
 import { NavBar } from "./navbar";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 import { useAlert } from "react-alert-with-buttons";
-import { useEffect, useReducer } from "react";
+import { useEffect, useReducer, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { PotlukkEditFormReducer, PotlukkEditInputState } from "../reducers/potluck-edit-form-reducer";
 import { Invitation_Component } from "../components/invitation_component";
 import { Attendees_Component } from "../components/attendees_component";
 //remember to take in putlukk object as props
 //prop typing error remember
-export function PotlukkDetailHost(potlukkProps:any){
+export function PotlukkDetailHost(){
+  const[update,setUpdate] = useState<boolean>(false)
+  const {potlukk} = useParams()
   const sendDispatch = useDispatch()<PotlukkActions>
-  const potlukkId = potlukkProps.id;
+  const potlukkId = Number(potlukk);
   const selector = useSelector((store: LukkerUserState) => store)
-  console.log(selector.currentPotluck)
-  const details = selector.currentPotluck.details.details
+  //console.log(selector.currentPotluck)
+  const details = selector.currentPotluck.details
+  //console.log(details)
   const initialState: PotlukkEditInputState = {
           potlukkId: potlukkId,
           title: details.title,
           location: details.location,
-          status: details.status,
+          status: details.status.toString(),
           description: details.description,
           isPublic: details.isPublic,
           time: details.time,
@@ -31,14 +34,8 @@ export function PotlukkDetailHost(potlukkProps:any){
 
   }
   useEffect(()=>{ // use effect for rest gets/ constant display
-      
-    (async ()=>{
-        
-        await sendDispatch({type: "REQUEST_GET_POTLUKK_BY_ID", payload: potlukkId.toString()}); // await since it rreturns a promise
-        
-    })();
-    
-  },[]);
+      sendDispatch({type: "REQUEST_GET_POTLUKK_BY_ID", payload: potlukkId}); // await since it rreturns a promise
+  },[update]);
   
   const alert = useAlert();
   const router = useNavigate();
@@ -65,7 +62,7 @@ export function PotlukkDetailHost(potlukkProps:any){
               <Calendar onChange={(value: any,event: any) => dispatchForm({type: "UPDATE_TIME",payload: value.getTime() /1000})}/>
             </div>
             <div className="updatePotlukk-container">
-              <button onClick={() =>sendDispatch({type:"REQUEST_EDIT_POTLUKK", payload: FormState})}>Update</button>
+              <button onClick={() =>{sendDispatch({type:"REQUEST_EDIT_POTLUKK", payload: FormState});setUpdate(!update)}}>Update</button>
             </div>
             <div className="cancelPotlukk-container">
             {/* <button onClick={() =>dispatchForm({type:"UPDATE_CANCELLED", payload: "CANCELLED"})}>Delete</button> */}

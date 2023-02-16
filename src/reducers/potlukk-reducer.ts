@@ -86,9 +86,19 @@ export type LukkerUserState = {
     filteredPotlukkList: Potlukk[]
 }
 
+export type PotlukkDetails = {
+    title: string
+    location: string
+    status: PotlukkStatus
+    description: string
+    isPublic: boolean
+    time: number
+    tags: string[]
+  }
+
 export type Potlukk = {
     potlukkId: number,
-    details: PotlukkCreationInputState,
+    details: PotlukkDetails,
     host: LukkerUserInfo,
     invitations: Invitation[],
     dishes: Dishes[]
@@ -116,7 +126,7 @@ export type RequestGetUsersAction = {type:"REQUEST_GET_USERS", payload: string}
 export type RequestUserById = {type: "REQUEST_USER_BY_ID", payload: string}
 export type RequestCreatePotlukk = {type: "REQUEST_CREATE_POTLUKK", payload: PotlukkCreationInputState}
 export type RequestEditPotlukk = {type: "REQUEST_EDIT_POTLUKK", payload: PotlukkEditInputState}
-export type RequestGetPotlukkById = {type: "REQUEST_GET_POTLUKK_BY_ID", payload: string}
+export type RequestGetPotlukkById = {type: "REQUEST_GET_POTLUKK_BY_ID", payload:number}
 export type Refresh_Users = {type: "REFRESH_USERS"}
 export type RequestPotlukkDetailsAction = {type:"REQUEST_POTLUKK_DETAILS"}
 // Action types
@@ -138,11 +148,10 @@ export const initialState: LukkerUserState = {
     },
     currentPotluck: {
         potlukkId: 178540,
-        details: {
-          details:{
+        details:{
           title: "chicken",
           location: "atPotlukkk",
-          status: "SCHEDULED",
+          status: PotlukkStatus.SCHEDULED,
           description: "peiece of meat",
           isPublic: false,
           time: 9,
@@ -150,8 +159,7 @@ export const initialState: LukkerUserState = {
             "akdna"
           ]
         },
-        hostId: 56452
-      },
+      
         host: {
           userId: 56452,
           username: "Host",
@@ -243,7 +251,7 @@ export function lukkerUserReducer(state: LukkerUserState = initialState, action:
         }
         case "SET_CURRENT_POTLUKK":{
             nextState.currentPotluck = action.payload
-
+            //console.log(action.payload)
             return nextState
         }
         default:

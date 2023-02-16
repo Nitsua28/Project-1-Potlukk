@@ -1,4 +1,4 @@
-import { InvitationStatus, LukkerUserInfo, lukkerUserReducer, LukkerUserState, Potlukk } from "../reducers/potlukk-reducer"
+import { InvitationStatus, LukkerUserInfo, lukkerUserReducer, LukkerUserState, Potlukk, PotlukkDetails, PotlukkStatus } from "../reducers/potlukk-reducer"
 import {PotlukkCreationInputState} from "../reducers/potluck-form-reducer"
 
 const testState:LukkerUserState ={
@@ -12,18 +12,16 @@ const testState:LukkerUserState ={
     currentPotluck: {
         potlukkId: 178540,
         details: {
-          details:{
           title: "chicken",
           location: "atPotlukkk",
-          status: "SCHEDULED",
+          status: PotlukkStatus.SCHEDULED,
           description: "peiece of meat",
           isPublic: false,
           time: 9,
           tags: [
             "akdna"
           ]
-        },
-        hostId: 56452
+       
       },
         host: {
           userId: 56452,
@@ -116,18 +114,14 @@ test("GET users", ()=>{
     expect(nextState.userList.some(e=>e.userId===80594)).toBe(true)
 })
 
-const testPotlukkDetails:PotlukkCreationInputState = {
-    details: {
+const testPotlukkDetails:PotlukkDetails = {
         title: "Birthday bash",
         location: "Park",
-        status: "SCHEDULED",
+        status: PotlukkStatus.SCHEDULED,
         description: "Birng gift",
         isPublic: false,
         time: 1677567600,
         tags: ["fun"]
-        
-    },
-    hostId: 85694
 }
 
 test("ADD potlukk", ()=>{

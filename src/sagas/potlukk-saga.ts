@@ -96,6 +96,19 @@ export function* editPotlukkByForm(action: RequestEditPotlukk){
     }
 }
 
+export function* cancelPotlukk(action: RequestEditPotlukk){
+
+    try{
+        action.payload.status = "CANCELLED";
+        const potlukk: Potlukk  = yield editPotlukk(action.payload);
+        
+        
+    }catch(e){
+        yield put({type:"ERROR", payload: e, error:true
+        });
+    }
+}
+
 export function* getPotlukkByIdForm(action: RequestGetPotlukkById){
 
     try{
@@ -160,13 +173,17 @@ export function* watcheditPotlukkByForm(){
 export function* watchGetPotlukkById(){
     yield takeEvery("REQUEST_GET_POTLUKK_BY_ID", getPotlukkByIdForm)
 }
+export function* watchCancelPotlukk(){
+    yield takeEvery("REQUEST_CANCEL_POTLUKK", cancelPotlukk)
+}
 //root saga
 export function* rootSaga(){
 
     yield all([watchCreateUserData(), watchGetUsers(),
          watchCreatePotlukk(), watchSignInUser(),
          watchGetUserByIdInvite(), watcheditPotlukkByForm(),
-         watchGetPotlukkById(), watchGetPotlukkDetails()]) // an array of watcher sagas
+         watchGetPotlukkById(), watchGetPotlukkDetails(),
+         watchCancelPotlukk()]) // an array of watcher sagas
 
 }
 

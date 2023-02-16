@@ -1,12 +1,14 @@
 import { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { useParams } from "react-router-dom";
+import { Link, useNavigate, useParams } from "react-router-dom";
+import { DishEditPage } from "../pages/dish-edit-page";
 import { LukkerUserState, Potlukk, PotlukkActions } from "../reducers/potlukk-reducer";
 
-export function Attendees_Component(props:{number:number}){
+export function Dishes_Component(props:{number:number}){
 
     const selector = useSelector((store: LukkerUserState) => store)
     const sendDispatch = useDispatch()<PotlukkActions>
+    const router = useNavigate();
     useEffect(()=>{ // use effect for rest gets/ constant display
       
         (async ()=>{
@@ -20,11 +22,10 @@ export function Attendees_Component(props:{number:number}){
 
     return (
         <>
-            <h1>Attendees</h1>
           <div>
                 <ul>
-                    {selector.currentPotluck.invitations.map(
-                    (item) => <li key={item.potlukker.userId}> {item.potlukker.username} {item.status}</li>
+                    {selector.currentPotluck.dishes.map(
+                    (item) => <li key={item.name}> {item.name} <Link to={"/dishedit/" + props.number+ "/"+ item.name}>edit</Link></li>
                     )}
                 </ul>
           </div>

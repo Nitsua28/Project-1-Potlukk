@@ -54,7 +54,8 @@ const testState:LukkerUserState ={
 
     error:false,
     newUserAdded:false,
-    filteredPotlukkList: []
+    filteredPotlukkList: [],
+    dishes: []
 }
 
 const testU1:LukkerUserInfo ={

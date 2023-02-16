@@ -13,7 +13,7 @@ export type PotlukkEditInputState = {
 
 export type UpdateTitle = {type: "UPDATE_TITLE", payload:string}
 export type UpdateLocation = {type: "UPDATE_LOCATION", payload:string}
-export type UpdateCancelledAction = {type:"UPDATE_CANCELLED", payload:"CANCELLED"}
+export type UpdateCancelledAction = {type:"UPDATE_CANCELLED"}
 export type UpdateDescription = {type: "UPDATE_DESCRIPTION", payload: string}
 export type UpdateIsPublic = {type: "UPDATE_ISPUBLIC", payload: boolean}
 export type UpdateTime = {type: "UPDATE_TIME", payload: number}
@@ -36,7 +36,9 @@ export function PotlukkEditFormReducer(state: PotlukkEditInputState, action: Pot
             return nextState
         }
         case "UPDATE_CANCELLED":{
-            nextState.status = action.payload;
+            console.log("step 2");
+            nextState.status = "CANCELLED";
+            console.log(nextState.status)
             return nextState
         }
         case "UPDATE_DESCRIPTION":{

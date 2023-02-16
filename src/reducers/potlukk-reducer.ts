@@ -84,6 +84,7 @@ export type LukkerUserState = {
     potlukkList: Potlukk[]
     invited: LukkerUserInfo[]
     filteredPotlukkList: Potlukk[]
+    dishes: Dishes[]
 }
 
 export type PotlukkDetails = {
@@ -126,6 +127,7 @@ export type RequestGetUsersAction = {type:"REQUEST_GET_USERS", payload: string}
 export type RequestUserById = {type: "REQUEST_USER_BY_ID", payload: string}
 export type RequestCreatePotlukk = {type: "REQUEST_CREATE_POTLUKK", payload: PotlukkCreationInputState}
 export type RequestEditPotlukk = {type: "REQUEST_EDIT_POTLUKK", payload: PotlukkEditInputState}
+export type RequestCancelPotlukk = {type: "REQUEST_CANCEL_POTLUKK", payload: PotlukkEditInputState}
 export type RequestGetPotlukkById = {type: "REQUEST_GET_POTLUKK_BY_ID", payload:number}
 export type Refresh_Users = {type: "REFRESH_USERS"}
 export type RequestPotlukkDetailsAction = {type:"REQUEST_POTLUKK_DETAILS"}
@@ -134,7 +136,7 @@ export type PotlukkActions = CreateUserAction | GetUsersAction | AddUserAction |
         | ClearErrorAction | ClearUserAdded | SetUser | SignInUser |
         RequestGetUsersAction | GetUserByName | Refresh_Users | AddPotlukk | RequestCreatePotlukk
         | InviteUserAction | DeleteInvitedAction | RequestEditPotlukk | ClearInvited | RequestPotlukkDetailsAction 
-        | GetPotlukkDetails | SetCurrentPotlukk | RequestGetPotlukkById;
+        | GetPotlukkDetails | SetCurrentPotlukk | RequestGetPotlukkById | RequestCancelPotlukk;
 
 
 export const initialState: LukkerUserState = {
@@ -147,26 +149,25 @@ export const initialState: LukkerUserState = {
         allergies: []
     },
     currentPotluck: {
-        potlukkId: 178540,
+        potlukkId: 123,
         details:{
-          title: "chicken",
-          location: "atPotlukkk",
-          status: PotlukkStatus.SCHEDULED,
-          description: "peiece of meat",
+          title: "",
+          location: "",
+          status: PotlukkStatus.CANCELLED,
+          description: "testPotluck",
           isPublic: false,
-          time: 9,
+          time: 0,
           tags: [
-            "akdna"
+            "this is a test"
           ]
         },
       
         host: {
-          userId: 56452,
-          username: "Host",
-          fname: "Joe",
-          lname: "Biden",
+          userId: 0,
+          username: "",
+          fname: "John",
+          lname: "Smith",
           allergies: [
-            "MILK"
           ]
         },
         invitations: [
@@ -179,7 +180,9 @@ export const initialState: LukkerUserState = {
     newUserAdded:false,
     potlukkList: [],
     invited: [],
-    filteredPotlukkList: []
+    filteredPotlukkList: [],
+    dishes: []
+
 }
 
 export function lukkerUserReducer(state: LukkerUserState = initialState, action: PotlukkActions):LukkerUserState{
@@ -251,7 +254,6 @@ export function lukkerUserReducer(state: LukkerUserState = initialState, action:
         }
         case "SET_CURRENT_POTLUKK":{
             nextState.currentPotluck = action.payload
-            //console.log(action.payload)
             return nextState
         }
         default:

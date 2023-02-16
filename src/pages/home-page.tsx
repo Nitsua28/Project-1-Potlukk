@@ -24,20 +24,20 @@ export function HomePage(){
     },[])
 
     //console.log(potlukkList)
-    console.log(potlukkList.filter(e=>e.host.userId===Number(localStorage.getItem("userid")) ||  e.invitations.some(u=>u.potlukker.userId===Number(localStorage.getItem("userid"))&&u.status.toString()==="ACCEPTED"))) 
+    //console.log(potlukkList.filter(e=>e.host.userId===Number(localStorage.getItem("userid")) ||  e.invitations.some(u=>u.potlukker.userId===Number(localStorage.getItem("userid"))&&u.status.toString()==="ACCEPTED"))) 
     return <>
         <NavBar/>
         <div style={{display:"flex", width:"100%", height:"100vh", backgroundColor:"wheat", justifyContent:"center", alignItems:"center"}}>
             <div>
                 <h1>Invited Potlukks</h1>
                 {potlukkList.filter(e=>e.invitations.some(u=>u.potlukker.userId===Number(localStorage.getItem("userid"))
-                &&u.status.toString()==="PENDING" )).map(f=><button>{f.potlukkId}</button>)}
+                &&u.status.toString()==="PENDING" )).map(f=><button onClick={()=>router("guest/"+f.potlukkId)}>{f.potlukkId}</button>)}
             </div>
             <div>
                 <h1>Attending Potlukks</h1>
                 {potlukkList.filter(e=>e.host.userId===Number(localStorage.getItem("userid")) 
                 ||  e.invitations.some(u=>u.potlukker.userId===Number(localStorage.getItem("userid"))
-                &&u.status.toString()==="ACCEPTED")).map(f=><button>{f.potlukkId}</button>)}
+                &&u.status.toString()==="ACCEPTED")).map(f=><button onClick={()=>router(f.host.userId===Number(localStorage.getItem("userid")) ? "/host/"+f.potlukkId:"/guest/"+f.potlukkId)}>{f.potlukkId}</button>)}
             </div>
             <div>
                 <h1>Notifications</h1>

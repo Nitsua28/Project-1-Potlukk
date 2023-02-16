@@ -134,9 +134,9 @@ export async function editPotlukk(form: PotlukkEditInputState):Promise<Potlukk>{
 }
 
 
-export async function getPotlukkById(form: string):Promise<Potlukk>{
+export async function getPotlukkById(form:number):Promise<Potlukk>{
 
-  const query = `query getPoutlukkById($input: Int){
+  const query = `query getPoutlukkById($input: Int!){
     potlukks(potlukkId: $input){
       ...on Potlukk{
         potlukkId
@@ -181,7 +181,8 @@ export async function getPotlukkById(form: string):Promise<Potlukk>{
 
   const httpResponse = await fetch("http://127.0.0.1:8000/graphql", {method:"POST", body, headers:{"Content-Type":"application/json"}});
   const responseBody = await httpResponse.json();
-  const potlukk:Potlukk = responseBody.data.potlukks;
+  const potlukk:Potlukk = responseBody.data.potlukks[0];
+  return potlukk
 }
 export async function getPotlukkuserDetails():Promise<Potlukk[]>{
   const query = `query getPotlukkUserDetails {

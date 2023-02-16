@@ -34,8 +34,8 @@ function App() {
           <Route path='/' element={<SignIn/>}/>
           <Route path='/home' element={<HomePage/>}/>
           <Route path='/registration' element={<RegisterPage/>}/>
-          <Route path='/guest' element={<PotlukkDetailGuest/>}/>
-          <Route path='/host' element={<PotlukkDetailHost id={exampleProps}/>}/>
+          <Route path='/guest/:potlukk' element={<PotlukkDetailGuest/>}/>
+          <Route path='/host/:potlukk' element={<PotlukkDetailHost/>}/>
           {/*bad practice?*/ }
           <Route path="/error" element={<RegisterFailed/>}/>
           <Route path="/success" element={<RegisterSuccess/>}/>

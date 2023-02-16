@@ -1,11 +1,21 @@
 import { Dishes, PotlukkActions } from "../reducers/potlukk-reducer";
 import { useParams } from "react-router-dom";
-import { useEffect } from "react";
+import { useEffect, useReducer } from "react";
 import { useDispatch } from "react-redux";
+import { DishFormReducer, DishFormState } from "../reducers/dish-form-reducer";
 export function DishEditPage(){
     const {potlukkId,dishname} = useParams();
     const userid = localStorage.getItem("userid");
     const sendDispatch = useDispatch()<PotlukkActions>
+    const initialState: DishFormState = {
+            name: "",
+            description: "",
+            broughtBy: Number(userid),
+            serves: 0,
+            allergens: []
+    }
+    
+    const [FormState, dispatchForm] = useReducer(DishFormReducer, initialState);
     useEffect(()=>{ // use effect for rest gets/ constant display
       
         (async ()=>{
@@ -20,11 +30,11 @@ export function DishEditPage(){
             <div>
                 <div>
                     <label>Name</label>
-                    <input></input>
+                    <input onChange={()=> dispatchForm({type: "UPDATE_NAME",payload: FormState.name})}></input>
                     <label>Description</label>
-                    <input></input>
+                    <input onChange={()=> dispatchForm({type: "UPDATE_DESCRIPTION",payload: FormState.description})}></input>
                     <label>Serves</label>
-                    <input></input>
+                    <input onChange={()=> dispatchForm({type: "UPDATE_SERVES",payload: FormState.serves})}></input>
                     <button>Delete</button>
                 </div>
                 <div>
@@ -33,7 +43,7 @@ export function DishEditPage(){
                         <ul>
                             <li>
                                 <label>MILK</label>
-                                <input type="checkbox"></input>
+                                {/* <input type="checkbox" onChange={(e)=>dispa}></input> */}
                             </li>
                             <li>
                                 <label>EGG</label>

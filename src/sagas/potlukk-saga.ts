@@ -1,5 +1,5 @@
 import { takeEvery, put, all, select } from "@redux-saga/core/effects";
-import { createUser, getAllUsers, createPotlukk, verifyUser, getUserById, sendInvite, editPotlukk, getPotlukkById, getPotlukkuserDetails } from "../api/potlukk-requests";
+import { createUser, getAllUsers, createPotlukk, verifyUser, getUserById, sendInvite, editPotlukk, getPotlukkById, getPotlukkuserDetails, swapDishes } from "../api/potlukk-requests";
 import { CreateUserAction, LukkerUserInfo, Potlukk, RequestCreatePotlukk,
      RequestGetUsersAction, SignInUser, RequestUserById, RequestEditPotlukk, InvitationSendInput, RequestPotlukkDetailsAction, RequestGetPotlukkById, SetCurrentPotlukk  } from "../reducers/potlukk-reducer";
 
@@ -95,7 +95,18 @@ export function* editPotlukkByForm(action: RequestEditPotlukk){
         });
     }
 }
+// export function* swapDishesByForm(action: RequestSwapDishes){
 
+//     try{
+        
+//         const potlukk: Potlukk  = yield swapDishes(action.payload);
+        
+        
+//     }catch(e){
+//         yield put({type:"ERROR", payload: e, error:true
+//         });
+//     }
+// }
 export function* cancelPotlukk(action: RequestEditPotlukk){
 
     try{

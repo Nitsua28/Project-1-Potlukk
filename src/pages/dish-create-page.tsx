@@ -1,4 +1,4 @@
-import { Dishes, PotlukkActions, Allergen, LukkerUserState, DishesSwapInput } from "../reducers/potlukk-reducer";
+import { Dishes, PotlukkActions, Allergen, LukkerUserState, DishesSwapInput, PotlukkNotificationInput } from "../reducers/potlukk-reducer";
 import { useNavigate, useParams } from "react-router-dom";
 import { useEffect, useReducer } from "react";
 import { useDispatch, useSelector } from "react-redux";
@@ -36,6 +36,13 @@ export function DishCreatePage(){
             }
         
             sendDispatch({type:"REQUEST_SWAP_DISHES", payload:form})
+            const notified:PotlukkNotificationInput = {
+                affectedPotlukkId:Number(potlukkId),
+                createdByUser:userid,
+                description:FormState.name,
+                kind: "DISH_ADDED"
+            }
+            sendDispatch({type:"REQUEST_CREATE_NOTIFICATION",payload:notified})
             router("/host/" + potlukkId.toString())
         }
         else{alert("Field name required or Dish already exists")}

@@ -118,6 +118,7 @@ export type LukkerUserState = {
     filteredPotlukkList: Potlukk[]
     dishes: Dishes[]
     addedNotification: PotlukkNotification
+    filteredNotificationList: PotlukkNotification[]
 }
 
 export type PotlukkDetails = {
@@ -154,6 +155,7 @@ export type AddPotlukk = {type:"ADD_POTLUKK", payload: Potlukk}
 export type ClearInvited = {type:"CLEAR_INVITED"}
 export type GetPotlukkDetails = {type:"GET_POTLUKK_DETAILS",payload:Potlukk[]}
 export type SetNotificationAction = {type:"SET_NOTIFICATION",payload:PotlukkNotification}
+export type SetNotificationList = {type:"SET_NOTIFICATION_LIST",payload:PotlukkNotification[]}
 //Saga Actions
 export type CreateUserAction = {type:"CREATE_USER", payload:CreateUserForm}
 export type SignInUser = {type:"SIGN_IN_USER", payload:SignInForm}
@@ -173,7 +175,7 @@ export type PotlukkActions = CreateUserAction | GetUsersAction | AddUserAction |
         RequestGetUsersAction | GetUserByName | Refresh_Users | AddPotlukk | RequestCreatePotlukk
         | InviteUserAction | DeleteInvitedAction | RequestEditPotlukk | ClearInvited | RequestPotlukkDetailsAction 
         | GetPotlukkDetails | SetCurrentPotlukk | RequestGetPotlukkById | RequestCancelPotlukk
-        | RequestSwapDishes | RequestCreateNotification | SetNotificationAction;
+        | RequestSwapDishes | RequestCreateNotification | SetNotificationAction | SetNotificationList;
 
 
 export const initialState: LukkerUserState = {
@@ -224,7 +226,8 @@ export const initialState: LukkerUserState = {
         kind:NotificationKind.INVITE_SENT,
         eventId:0,
         timestamp:0
-    }
+    },
+    filteredNotificationList:[]
 }
 
 export function lukkerUserReducer(state: LukkerUserState = initialState, action: PotlukkActions):LukkerUserState{
@@ -233,8 +236,9 @@ export function lukkerUserReducer(state: LukkerUserState = initialState, action:
     switch(action.type){
         case "GET_POTLUKK_DETAILS":{
             const result = action.payload.filter(filterByAttending)
-            localStorage.setItem("filteredList",JSON.stringify(result))
+            //localStorage.setItem("filteredList",JSON.stringify(result))
             //console.log(result)
+            localStorage.removeItem("filteredList")
             nextState.filteredPotlukkList = result
             return nextState
         }
@@ -302,7 +306,13 @@ export function lukkerUserReducer(state: LukkerUserState = initialState, action:
         }
         case "SET_NOTIFICATION":{
             nextState.addedNotification = action.payload
-            console.log(action.payload)
+            //console.log(action.payload)
+            return nextState
+        }
+        case "SET_NOTIFICATION_LIST":{
+            const result = action.payload.filter(filterByNotification)
+            nextState.filteredNotificationList = result
+            console.log(result)
             return nextState
         }
         default:
@@ -313,6 +323,11 @@ export function lukkerUserReducer(state: LukkerUserState = initialState, action:
         const result = potlukk.host.userId === Number(localStorage.getItem("userid")) || 
         potlukk.invitations.some(e=>e.potlukker.userId === Number(localStorage.getItem("userid")))
         //console.log(nextState.currentUser)
+        return result
+    }
+
+    function filterByNotification(note:PotlukkNotification){
+        const result = nextState.filteredPotlukkList.some(pt=>pt.potlukkId===note.affectedPotlukkId)
         return result
     }
 

@@ -332,6 +332,25 @@ export async function addNotification(params:PotlukkNotificationInput):Promise<P
   return result
 }
 
+export async function getNotifications():Promise<PotlukkNotification[]>{
+  const query =`query getNotifications {
+    notifications {
+      affectedPotlukkId
+      createdByUser
+      description
+      eventId
+      kind
+      timestamp
+    }
+  }`
+
+  const body = JSON.stringify({query:query})
+  const httpResponse = await fetch("http://127.0.0.1:8000/graphql", {method:"POST", body, headers:{"Content-Type":"application/json"}});
+  const responseBody = await httpResponse.json();
+  const result:PotlukkNotification[] = responseBody.data.notifications;
+  return result
+}
+
 export async function getAllUsers():Promise<LukkerUserInfo[]>{
     const httpResponse = await fetch("http://127.0.0.1:8000/lukkers", {
         method:"Get",

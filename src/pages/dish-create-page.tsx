@@ -12,8 +12,9 @@ export function DishCreatePage(){
     const userid = Number(localStorage.getItem("userid"));
     const router = useNavigate();
     const sendDispatch = useDispatch()<PotlukkActions>
-    const dishes = useSelector((store: LukkerUserState) => store.currentPotluck.dishes)
-
+    const currentPotluck = useSelector((store: LukkerUserState) => store.currentPotluck)
+    const dishes = currentPotluck.dishes
+    const hostOfPotluck = currentPotluck.host.userId
     const initialState: DishFormState = {
             name: "",
             description: "",
@@ -34,7 +35,9 @@ export function DishCreatePage(){
                 potlukkId:Number(potlukkId),
                 dishes: dishes
             }
-        
+           
+            
+
             sendDispatch({type:"REQUEST_SWAP_DISHES", payload:form})
             const notified:PotlukkNotificationInput = {
                 affectedPotlukkId:Number(potlukkId),
@@ -43,7 +46,10 @@ export function DishCreatePage(){
                 kind: "DISH_ADDED"
             }
             sendDispatch({type:"REQUEST_CREATE_NOTIFICATION",payload:notified})
-            router("/host/" + potlukkId.toString())
+            (hostOfPotluck === userid) ?
+            router("/host/" + potlukkId.toString()) :
+            router("/guest/" + potlukkId.toString())
+
         }
         else{alert("Field name required or Dish already exists")}
         

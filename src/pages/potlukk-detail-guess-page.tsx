@@ -1,5 +1,5 @@
 
-import { LukkerUserState, Potlukk, PotlukkActions } from "../reducers/potlukk-reducer";
+import { InvitationUpdateInput, LukkerUserState, Potlukk, PotlukkActions } from "../reducers/potlukk-reducer";
 import 'react-calendar/dist/Calendar.css';
 import { NavBar } from "./navbar";
 import { Link, useNavigate, useParams } from "react-router-dom";
@@ -24,10 +24,25 @@ export function PotlukkDetailGuest(){
 
   const selector = useSelector((store: LukkerUserState) => store)
 
-  const details = selector.currentPotluck.details
-  const initialStatus = selector.currentPotluck.invitations.filter((item) => item.potlukker.userId === userid);
-  const [status,setStatus] = useState()
+  const details = selector.currentPotluck.details;
+  let initialStatus = "";
+  if (selector.currentPotluck.invitations.length !== 0)
+  initialStatus = selector.currentPotluck.invitations.filter((item) => item.potlukker.userId === userid)[0].status;
   
+  
+  function makeForm(status:string){
+    const form :InvitationUpdateInput ={
+        potlukkId: potlukkId,
+        potlukkerId: userid,
+        status: status
+    }
+    sendDispatch({type: "REQUEST_UPDATE_INVITE", payload: form});
+  }
+  useEffect(()=>{ // use effect for rest gets/ constant display
+        
+        sendDispatch({type: "REQUEST_GET_POTLUKK_BY_ID", payload: potlukkId}); // await since it rreturns a promise
+  },[]);
+
 
     return (
     <>
@@ -48,9 +63,26 @@ export function PotlukkDetailGuest(){
                 <p>{new Date(details.time).toString()}</p>
             </div>
             <div>
-                <input type="range" min="0" max={MAX} className="slider" id="myRange">
-                </input>
-                <p id="rangeValue"></p>
+            <div>{initialStatus}</div>
+            <fieldset>
+    <legend>Invitation Status</legend>
+            
+            <div>
+                <input type="radio" id="changeToAccepted" name="InviteStatus"onChange={(e)=>((e.target.checked)&& makeForm("ACCEPTED"))}/>
+                <label htmlFor="changeToAccepted">Accept</label>
+            </div>
+
+            <div>
+                <input type="radio" id="changeToMaybe" name="InviteStatus" onChange={(e)=>((e.target.checked)&& makeForm("MAYBE"))}/>
+                <label htmlFor="changeToMaybe">Maybe</label>
+            </div>
+
+            <div>
+                <input type="radio" id="changeToDeclined" name="InviteStatus" onChange={(e)=>((e.target.checked)&& makeForm("DECLINED"))}/>
+                <label htmlFor="changeToDeclined">Decline</label>
+            </div>
+        </fieldset>
+
             </div>
         </div>
         <div className="dishes-container">

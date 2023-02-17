@@ -1,6 +1,6 @@
 import { takeEvery, put, all, select } from "@redux-saga/core/effects";
 import { useSelector } from "react-redux";
-import { createUser, getAllUsers, createPotlukk, verifyUser, getUserById, sendInvite, editPotlukk, getPotlukkById, getPotlukkuserDetails, swapDishes, addNotification, updateInvite} from "../api/potlukk-requests";
+import { createUser, getAllUsers, createPotlukk, verifyUser, getUserById, sendInvite, editPotlukk, getPotlukkById, getPotlukkuserDetails, swapDishes, addNotification, getNotifications, updateInvite} from "../api/potlukk-requests";
 import { DishFormState } from "../reducers/dish-form-reducer";
 import { CreateUserAction, LukkerUserInfo, Potlukk, RequestCreatePotlukk,
      RequestGetUsersAction, SignInUser, RequestUserById, RequestEditPotlukk, 
@@ -128,9 +128,16 @@ export function* editPotlukkByForm(action: RequestEditPotlukk){
 export function* swapDishesByForm(action: RequestSwapDishes){
 
     try{
+
         const potlukk: Potlukk  = yield swapDishes(action.payload);
-        
-        yield put({type: "SET_CURRENT_POTLUKK", payload: potlukk})
+        yield put({type: "SET_CURRENT_POTLUKK", payload: potlukk});
+        /*const notified:PotlukkNotification = yield addNotification({
+            affectedPotlukkId:potlukk.potlukkId,
+            createdByUser:potlukk.host.userId,
+            description:potlukk.details.description,
+            kind: "POTLUKK_CANCELED"
+        });
+        yield put({type:"SET_NOTIFICATION",payload:notified})*/
     }catch(e){
         yield put({type:"ERROR", payload: e, error:true
         });
@@ -195,6 +202,8 @@ export function* getPotlukkDetails(action:RequestPotlukkDetailsAction){
     try{
         const lukkers: Potlukk[]  = yield getPotlukkuserDetails();
         yield put({type:"GET_POTLUKK_DETAILS",payload: lukkers});
+        const notices: PotlukkNotification[] = yield getNotifications();
+        yield put({type:"SET_NOTIFICATION_LIST",payload:notices});
     }catch(e){
         yield put({type:"ERROR", payload: e, error:true
         });

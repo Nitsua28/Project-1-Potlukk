@@ -12,7 +12,8 @@ export function HomePage(){
     const router = useNavigate()
 
     const currentUserState = useSelector((store:LukkerUserState) => store.currentUser);
-    const potlukkList = useSelector((store:LukkerUserState) => store.filteredPotlukkList)
+    const potlukkList = useSelector((store:LukkerUserState) => store.filteredPotlukkList);
+    const notificationList = useSelector((store:LukkerUserState)=>store.filteredNotificationList);
     const dispatch = useDispatch()<PotlukkActions>;
     if(localStorage.getItem("userid") === "0"){
         alert("Please login or signup to access home page")
@@ -31,16 +32,17 @@ export function HomePage(){
             <div>
                 <h1>Invited Potlukks</h1>
                 {potlukkList.filter(e=>e.invitations.some(u=>u.potlukker.userId===Number(localStorage.getItem("userid"))
-                &&u.status.toString()==="PENDING" )).map(f=><button onClick={()=>router("/guest/"+f.potlukkId)}>{f.potlukkId}</button>)}
+                &&u.status.toString()==="PENDING" )).map(f=><div><button onClick={()=>router("/guest/"+f.potlukkId)}>{f.potlukkId}</button></div>)}
             </div>
             <div>
                 <h1>Attending Potlukks</h1>
                 {potlukkList.filter(e=>e.host.userId===Number(localStorage.getItem("userid")) 
                 ||  e.invitations.some(u=>u.potlukker.userId===Number(localStorage.getItem("userid"))
-                &&u.status.toString()==="ACCEPTED")).map(f=><button onClick={()=>router(f.host.userId===Number(localStorage.getItem("userid")) ? "/host/"+f.potlukkId:"/guest/"+f.potlukkId)}>{f.potlukkId}</button>)}
+                &&u.status.toString()==="ACCEPTED")).map(f=><div><button onClick={()=>router(f.host.userId===Number(localStorage.getItem("userid")) ? "/host/"+f.potlukkId:"/guest/"+f.potlukkId)}>{f.potlukkId}</button></div>)}
             </div>
             <div>
                 <h1>Notifications</h1>
+                {notificationList.map(n => <div><button onClick={()=>router("/guest/"+n.affectedPotlukkId)}>{n.kind}</button></div>)}
             </div>
         </div>
     </>

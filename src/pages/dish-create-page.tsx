@@ -45,7 +45,7 @@ export function DishCreatePage(){
                 description:FormState.name,
                 kind: "DISH_ADDED"
             }
-            sendDispatch({type:"REQUEST_CREATE_NOTIFICATION",payload:notified})
+            sendDispatch({type:"REQUEST_CREATE_NOTIFICATION",payload:notified});
             (hostOfPotluck === userid) ?
             router("/host/" + potlukkId.toString()) :
             router("/guest/" + potlukkId.toString())

@@ -2,7 +2,7 @@
 import { useState, useReducer, useEffect } from "react"
 import { useDispatch, useSelector } from "react-redux"
 import { PotlukkFormReducer } from "../reducers/potluck-form-reducer"
-import { PotlukkActions ,LukkerUserState, PotlukkStatus, LukkerUserInfo } from "../reducers/potlukk-reducer"
+import { PotlukkActions ,LukkerUserState, PotlukkStatus, LukkerUserInfo, PotlukkNotificationInput } from "../reducers/potlukk-reducer"
 import { PotlukkCreationInputState } from "../reducers/potluck-form-reducer";
 import Calendar from 'react-calendar'
 import "../stylesheets/hostpage-style.css"
@@ -12,7 +12,7 @@ import { NavBar } from "./navbar";
 import { useNavigate } from "react-router-dom";
 export function Hostpage(){
     
-    const lukkerSelector = useSelector((store: LukkerUserState) => store)
+    const newpotlukk = useSelector((store: LukkerUserState) => store.potlukkList[0])
     const router = useNavigate();
     const initialState: PotlukkCreationInputState = {
         details: {
@@ -28,13 +28,21 @@ export function Hostpage(){
 
     }
     
+    
+
     const [FormState, dispatchForm] = useReducer(PotlukkFormReducer, initialState)
 
 
     const sendDispatch = useDispatch()<PotlukkActions>
     const [tagInput, setTagInput]= useState("")
-    
-    
+    /*
+    const note:PotlukkNotificationInput = {
+        affectedPotlukkId:action.payload.potlukkId,
+        createdByUser:action.payload.host.userId,
+        description:action.payload.details.description,
+        kind: NotificationKind.INVITE_SENT
+    }
+    */
     
     // function filterUsers(){
     //     tempArray = selector.userList.filter((item) => item.username === form)
@@ -91,7 +99,8 @@ export function Hostpage(){
                     <div className="createbutton-container">
                         <button onClick={() => 
                         {
-                            sendDispatch({type: "REQUEST_CREATE_POTLUKK", payload: FormState})
+                            sendDispatch({type: "REQUEST_CREATE_POTLUKK", payload: FormState});
+                            
                             router("/home");
                             }}>CREATE</button>
                     </div>

@@ -1,11 +1,12 @@
 import { takeEvery, put, all, select } from "@redux-saga/core/effects";
 import { useSelector } from "react-redux";
-import { createUser, getAllUsers, createPotlukk, verifyUser, getUserById, sendInvite, editPotlukk, getPotlukkById, getPotlukkuserDetails, swapDishes } from "../api/potlukk-requests";
+import { createUser, getAllUsers, createPotlukk, verifyUser, getUserById, sendInvite, editPotlukk, getPotlukkById, getPotlukkuserDetails, swapDishes, addNotification} from "../api/potlukk-requests";
 import { DishFormState } from "../reducers/dish-form-reducer";
 import { CreateUserAction, LukkerUserInfo, Potlukk, RequestCreatePotlukk,
      RequestGetUsersAction, SignInUser, RequestUserById, RequestEditPotlukk, 
      InvitationSendInput, RequestPotlukkDetailsAction, RequestGetPotlukkById,
-      SetCurrentPotlukk, RequestSwapDishes, LukkerUserState, DishesSwapInput, PotlukkActions  } from "../reducers/potlukk-reducer";
+      SetCurrentPotlukk, RequestSwapDishes, LukkerUserState, DishesSwapInput, PotlukkActions,
+      PotlukkNotification, RequestCreateNotification, PotlukkNotificationInput, NotificationKind} from "../reducers/potlukk-reducer";
 
 
 
@@ -55,6 +56,16 @@ export function* getUserByIdFormInvite(action: RequestUserById){
     }
 }
 
+export function* createNewNotification(action:RequestCreateNotification){
+    try{
+        const notification:PotlukkNotification = yield addNotification(action.payload);
+        yield put({type:"SET_NOTIFICATION",payload:notification})
+    }catch(e){
+        yield put({type:"ERROR", payload: e, error:true
+        });
+    }
+}
+
 export function* createPotlukkByForm(action: RequestCreatePotlukk){
 
     try{
@@ -68,6 +79,13 @@ export function* createPotlukkByForm(action: RequestCreatePotlukk){
             potlukkId: potlukk.potlukkId,
             potlukkerId: item.userId
         })})
+        const notified:PotlukkNotification = yield addNotification({
+            affectedPotlukkId:potlukk.potlukkId,
+            createdByUser:potlukk.host.userId,
+            description:potlukk.details.description,
+            kind: "INVITE_SENT"
+        });
+        yield put({type:"SET_NOTIFICATION",payload:notified})
         yield put({type:"CLEAR_INVITED"});
         yield put({type:"ADD_POTLUKK",payload: potlukk});
     }catch(e){
@@ -92,8 +110,16 @@ export function* editPotlukkByForm(action: RequestEditPotlukk){
                 potlukkerId: item.userId
             }
         )
-    })
+        })
         
+        const notified:PotlukkNotification = yield addNotification({
+            affectedPotlukkId:potlukk.potlukkId,
+            createdByUser:potlukk.host.userId,
+            description:potlukk.details.description,
+            kind: "POTLUKK_ALTERED"
+        });
+        yield put({type:"SET_NOTIFICATION",payload:notified})
+
     }catch(e){
         yield put({type:"ERROR", payload: e, error:true
         });
@@ -125,7 +151,13 @@ export function* cancelPotlukk(action: RequestEditPotlukk){
     try{
         action.payload.status = "CANCELLED";
         const potlukk: Potlukk  = yield editPotlukk(action.payload);
-        
+        const notified:PotlukkNotification = yield addNotification({
+            affectedPotlukkId:potlukk.potlukkId,
+            createdByUser:potlukk.host.userId,
+            description:potlukk.details.description,
+            kind: "POTLUKK_CANCELED"
+        });
+        yield put({type:"SET_NOTIFICATION",payload:notified})
         
     }catch(e){
         yield put({type:"ERROR", payload: e, error:true
@@ -167,6 +199,10 @@ export function* getPotlukkDetails(action:RequestPotlukkDetailsAction){
 }
 
 //watcher sagas
+export function* watchCreateNotification(){
+    yield takeEvery("REQUEST_CREATE_NOTIFICATION",createNewNotification)
+}
+
 export function* watchGetPotlukkDetails(){
     yield takeEvery("REQUEST_POTLUKK_DETAILS",getPotlukkDetails)
 }
@@ -210,7 +246,9 @@ export function* rootSaga(){
          watchCreatePotlukk(), watchSignInUser(),
          watchGetUserByIdInvite(), watcheditPotlukkByForm(),
          watchGetPotlukkById(), watchGetPotlukkDetails(),
-         watchCancelPotlukk(), watchSwapDishesByForm()]) // an array of watcher sagas
+         watchCancelPotlukk(), watchSwapDishesByForm(),
+         watchCreateNotification()]) // an array of watcher sagas
+
 
 }
 

@@ -11,19 +11,96 @@ import { useDispatch, useSelector } from "react-redux";
 import { PotlukkEditFormReducer, PotlukkEditInputState } from "../reducers/potluck-edit-form-reducer";
 import { Invitation_Component } from "../components/invitation_component";
 import { Attendees_Component } from "../components/attendees_component";
+import { getPotlukkByIdForm } from "../sagas/potlukk-saga";
+import { getPotlukkById } from "../api/potlukk-requests";
+import { potlukkJson } from "../components/empty_states";
 //remember to take in putlukk object as props
 //prop typing error remember
+const initialState: PotlukkEditInputState = {
+  potlukkId: 0,
+  title: "",
+  location: "",
+  status: "",
+  description: "",
+  isPublic: false,
+  time: 0,
+  tags: []
+
+}
 export function PotlukkDetailHost(){
-  const[update,setUpdate] = useState<boolean>(false)
+  //const selector = useSelector((store: LukkerUserState) => store.currentPotluck)
+  const[pid,setPid] = useState<Potlukk>(JSON.parse(potlukkJson))
+  //const[update,setUpdate] = useState<boolean>(false)
   const {potlukk} = useParams()
-  const sendDispatch = useDispatch()<PotlukkActions>
   const potlukkId = Number(potlukk);
+  const sendDispatch = useDispatch()<PotlukkActions>
+  const selector = useSelector((store: LukkerUserState) => store.currentPotluck)
+  const [FormState, dispatchForm] = useReducer(PotlukkEditFormReducer, initialState)
+  //const pot = async () => {await getPotlukkById(potlukkId)}
+  //setPid(selector.potlukkId)
+  
+  useEffect(()=>{ // use effect for rest gets/ constant display
+    getPotlukkById(potlukkId)
+    .then(pl => setPid(pl))
+    .catch(error => {})
+    console.log(pid)
+    //sendDispatch({type: "REQUEST_GET_POTLUKK_BY_ID", payload: potlukkId});
+    //while(pid !== selector.potlukkId){setPid(selector.potlukkId);console.log(pid)}
+    const potluk = {
+      potlukkId: pid.potlukkId,
+      title: pid.details.title,
+      location: pid.details.location,
+      status: pid.details.status.toString(),
+      description: pid.details.description,
+      isPublic: pid.details.isPublic,
+      time: pid.details.time,
+      tags: pid.details.tags
+    }
+    dispatchForm({type:"LOAD_EDIT_FORM", payload:potluk})
+  },[]);
+
+  //console.log(pid+"   "+potlukkId)
+/*
+  const potluk = {
+    potlukkId: potlukkId,
+    title: selector.details.title,
+    location: selector.details.location,
+    status: selector.details.status.toString(),
+    description: selector.details.description,
+    isPublic: selector.details.isPublic,
+    time: selector.details.time,
+    tags: selector.details.tags
+  }
+  
+  dispatchForm({type:"LOAD_EDIT_FORM", payload:potluk})
+  */
+  /*
+  const potluk = {
+    potlukkId: selector.potlukkId,
+    title: selector.details.title,
+    location: selector.details.location,
+    status: selector.details.status.toString(),
+    description: selector.details.description,
+    isPublic: selector.details.isPublic,
+    time: selector.details.time,
+    tags: selector.details.tags
+  }
+  
+  useEffect(()=>{
+    dispatchForm({type:"LOAD_EDIT_FORM", payload:potluk})
+  },[])
+  */
+  
+  
+  
+
+  /*
   const selector = useSelector((store: LukkerUserState) => store)
   //console.log(selector.currentPotluck)
   const details = selector.currentPotluck.details
   //console.log(details)
   const initialState: PotlukkEditInputState = {
-          potlukkId: potlukkId,
+          potlukkId: selector.currentPotluck.potlukkId,
           title: details.title,
           location: details.location,
           status: details.status.toString(),
@@ -33,15 +110,13 @@ export function PotlukkDetailHost(){
           tags: details.tags
 
   }
-  useEffect(()=>{ // use effect for rest gets/ constant display
-      sendDispatch({type: "REQUEST_GET_POTLUKK_BY_ID", payload: potlukkId}); // await since it rreturns a promise
-  },[update]);
+  */
+  
+  
+  
   
   const alert = useAlert();
   const router = useNavigate();
-  
-  const [FormState, dispatchForm] = useReducer(PotlukkEditFormReducer, initialState)
-
   let date = new Date(FormState.time * 1000)
 
 
@@ -62,7 +137,7 @@ export function PotlukkDetailHost(){
               <Calendar onChange={(value: any,event: any) => dispatchForm({type: "UPDATE_TIME",payload: value.getTime() /1000})}/>
             </div>
             <div className="updatePotlukk-container">
-              <button onClick={() =>{sendDispatch({type:"REQUEST_EDIT_POTLUKK", payload: FormState});setUpdate(!update)}}>Update</button>
+              <button onClick={() =>{sendDispatch({type:"REQUEST_EDIT_POTLUKK", payload: FormState})}}>Update</button>
             </div>
             <div className="cancelPotlukk-container">
             {/* <button onClick={() =>dispatchForm({type:"UPDATE_CANCELLED", payload: "CANCELLED"})}>Delete</button> */}

@@ -1,7 +1,7 @@
 import { takeEvery, put, all, select } from "@redux-saga/core/effects";
-import { createUser, getAllUsers, createPotlukk, verifyUser, getUserById, sendInvite, editPotlukk, getPotlukkById, getPotlukkuserDetails } from "../api/potlukk-requests";
+import { createUser, getAllUsers, createPotlukk, verifyUser, getUserById, sendInvite, editPotlukk, getPotlukkById, getPotlukkuserDetails, addNotification } from "../api/potlukk-requests";
 import { CreateUserAction, LukkerUserInfo, Potlukk, RequestCreatePotlukk,
-     RequestGetUsersAction, SignInUser, RequestUserById, RequestEditPotlukk, InvitationSendInput, RequestPotlukkDetailsAction, RequestGetPotlukkById, SetCurrentPotlukk  } from "../reducers/potlukk-reducer";
+     RequestGetUsersAction, SignInUser, RequestUserById, RequestEditPotlukk, InvitationSendInput, RequestPotlukkDetailsAction, RequestGetPotlukkById, SetCurrentPotlukk, PotlukkNotification, RequestCreateNotification  } from "../reducers/potlukk-reducer";
 
 
 
@@ -45,6 +45,16 @@ export function* getUserByIdFormInvite(action: RequestUserById){
     try{
         const lukker: LukkerUserInfo  = yield getUserById(action.payload);
         yield put({type:"INVITE_BUTTON",payload: lukker});
+    }catch(e){
+        yield put({type:"ERROR", payload: e, error:true
+        });
+    }
+}
+
+export function* createNewNotification(action:RequestCreateNotification){
+    try{
+        const notification:PotlukkNotification = yield addNotification(action.payload);
+        yield put({type:"SET_NOTIFICATION",payload:notification})
     }catch(e){
         yield put({type:"ERROR", payload: e, error:true
         });
@@ -130,6 +140,10 @@ export function* getPotlukkDetails(action:RequestPotlukkDetailsAction){
 }
 
 //watcher sagas
+export function* watchCreateNotification(){
+    yield takeEvery("REQUEST_CREATE_NOTIFICATION",createNewNotification)
+}
+
 export function* watchGetPotlukkDetails(){
     yield takeEvery("REQUEST_POTLUKK_DETAILS",getPotlukkDetails)
 }
@@ -166,7 +180,7 @@ export function* rootSaga(){
     yield all([watchCreateUserData(), watchGetUsers(),
          watchCreatePotlukk(), watchSignInUser(),
          watchGetUserByIdInvite(), watcheditPotlukkByForm(),
-         watchGetPotlukkById(), watchGetPotlukkDetails()]) // an array of watcher sagas
+         watchGetPotlukkById(), watchGetPotlukkDetails(), watchCreateNotification()]) // an array of watcher sagas
 
 }
 

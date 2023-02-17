@@ -31,7 +31,7 @@ export function HomePage(){
             <div>
                 <h1>Invited Potlukks</h1>
                 {potlukkList.filter(e=>e.invitations.some(u=>u.potlukker.userId===Number(localStorage.getItem("userid"))
-                &&u.status.toString()==="PENDING" )).map(f=><button onClick={()=>router("guest/"+f.potlukkId)}>{f.potlukkId}</button>)}
+                &&u.status.toString()==="PENDING" )).map(f=><button onClick={()=>router("/guest/"+f.potlukkId)}>{f.potlukkId}</button>)}
             </div>
             <div>
                 <h1>Attending Potlukks</h1>

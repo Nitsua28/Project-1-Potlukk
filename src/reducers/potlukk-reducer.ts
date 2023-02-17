@@ -7,15 +7,15 @@ export enum PotlukkStatus {
     CANCELLED
 }
 
-export enum Allergen {
-    MILK,
-    EGG,
-    FISH,
-    SHELLFISH,
-    SOY,
-    WHEAT,
-    TREE_NUT
-}
+export type Allergen = [
+    "MILK"?,
+    "EGG"?,
+    "FISH"?,
+    "SHELLFISH"?,
+    "SOY"?,
+    "WHEAT"?,
+    "TREENUT"?
+]
 
 export enum InvitationStatus {
     ACCEPTED,
@@ -53,7 +53,7 @@ export type Dishes = {
     description: string,
     broughtBy: number,
     serves: number,
-    allergens: Allergen
+    allergens: string[]
 }
 
 export type DishesSwapInput = {
@@ -135,7 +135,7 @@ export type RequestCreatePotlukk = {type: "REQUEST_CREATE_POTLUKK", payload: Pot
 export type RequestEditPotlukk = {type: "REQUEST_EDIT_POTLUKK", payload: PotlukkEditInputState}
 export type RequestCancelPotlukk = {type: "REQUEST_CANCEL_POTLUKK", payload: PotlukkEditInputState}
 export type RequestGetPotlukkById = {type: "REQUEST_GET_POTLUKK_BY_ID", payload:number}
-export type RequestSwapDishes = {type: "REQUEST_SWAP_DISHES", payload: DishFormState}
+export type RequestSwapDishes = {type: "REQUEST_SWAP_DISHES", payload: DishesSwapInput}
 export type Refresh_Users = {type: "REFRESH_USERS"}
 export type RequestPotlukkDetailsAction = {type:"REQUEST_POTLUKK_DETAILS"}
 // Action types

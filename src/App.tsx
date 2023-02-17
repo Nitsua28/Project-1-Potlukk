@@ -42,8 +42,8 @@ function App() {
 
           <Route path='/createPotlukk' element={<Hostpage/>}/>
 
-          <Route path='/dishcreate' element={<DishCreatePage/>}/>
-          <Route path='/dishedit/:potlukk/:dishname' element={<DishEditPage/>}/>
+          <Route path='/dishcreate/:potlukkid' element={<DishCreatePage/>}/>
+          <Route path='/dishedit/:potlukkid/:dishname' element={<DishEditPage/>}/>
 
         </Routes>
       </BrowserRouter>

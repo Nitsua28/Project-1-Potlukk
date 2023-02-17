@@ -4,7 +4,7 @@ import Calendar from 'react-calendar';
 //import "../stylesheets/potlukk-detail-host-style.css"
 import 'react-calendar/dist/Calendar.css';
 import { NavBar } from "./navbar";
-import { useNavigate, useParams } from "react-router-dom";
+import { Link, useNavigate, useParams } from "react-router-dom";
 import { useAlert } from "react-alert-with-buttons";
 import { useEffect, useReducer, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
@@ -125,7 +125,9 @@ export function PotlukkDetailHost(){
         
               <Dishes_Component number={potlukkId}/>
             </div>
-            <div className="create-dish-container"></div>
+            <div className="create-dish-container">
+              <Link to={"/dishcreate/" + potlukkId.toString()}>Create</Link>
+            </div>
         </div>
         <div className="attendee-container">
           <Attendees_Component number={potlukkId}/>

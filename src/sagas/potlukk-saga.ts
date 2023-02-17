@@ -1,7 +1,11 @@
 import { takeEvery, put, all, select } from "@redux-saga/core/effects";
+import { useSelector } from "react-redux";
 import { createUser, getAllUsers, createPotlukk, verifyUser, getUserById, sendInvite, editPotlukk, getPotlukkById, getPotlukkuserDetails, swapDishes } from "../api/potlukk-requests";
+import { DishFormState } from "../reducers/dish-form-reducer";
 import { CreateUserAction, LukkerUserInfo, Potlukk, RequestCreatePotlukk,
-     RequestGetUsersAction, SignInUser, RequestUserById, RequestEditPotlukk, InvitationSendInput, RequestPotlukkDetailsAction, RequestGetPotlukkById, SetCurrentPotlukk  } from "../reducers/potlukk-reducer";
+     RequestGetUsersAction, SignInUser, RequestUserById, RequestEditPotlukk, 
+     InvitationSendInput, RequestPotlukkDetailsAction, RequestGetPotlukkById,
+      SetCurrentPotlukk, RequestSwapDishes, LukkerUserState, DishesSwapInput, PotlukkActions  } from "../reducers/potlukk-reducer";
 
 
 
@@ -95,18 +99,27 @@ export function* editPotlukkByForm(action: RequestEditPotlukk){
         });
     }
 }
-// export function* swapDishesByForm(action: RequestSwapDishes){
+export function* swapDishesByForm(action: RequestSwapDishes){
+    // const userId = localStorage.getItem("userid");
+    // const potlukkSelector = useSelector((store: LukkerUserState) => store.currentPotluck);
+    // const hostDishes = potlukkSelector.dishes.filter(
+    //     (item)=>{(item.broughtBy === Number(userId)) && 
+    //         (item.name !== action.payload.name)})
+    // hostDishes.push(action.payload);
 
-//     try{
+    // const form: DishesSwapInput= {
+    //     potlukkId:Number(potlukkSelector.potlukkId),
+    //     dishes: hostDishes
+    // }
+    try{
+        const potlukk: Potlukk  = yield swapDishes(action.payload);
         
-//         const potlukk: Potlukk  = yield swapDishes(action.payload);
-        
-        
-//     }catch(e){
-//         yield put({type:"ERROR", payload: e, error:true
-//         });
-//     }
-// }
+        yield put({type: "SET_CURRENT_POTLUKK", payload: potlukk})
+    }catch(e){
+        yield put({type:"ERROR", payload: e, error:true
+        });
+    }
+}
 export function* cancelPotlukk(action: RequestEditPotlukk){
 
     try{
@@ -187,6 +200,9 @@ export function* watchGetPotlukkById(){
 export function* watchCancelPotlukk(){
     yield takeEvery("REQUEST_CANCEL_POTLUKK", cancelPotlukk)
 }
+export function* watchSwapDishesByForm(){
+    yield takeEvery("REQUEST_SWAP_DISHES", swapDishesByForm)
+}
 //root saga
 export function* rootSaga(){
 
@@ -194,7 +210,7 @@ export function* rootSaga(){
          watchCreatePotlukk(), watchSignInUser(),
          watchGetUserByIdInvite(), watcheditPotlukkByForm(),
          watchGetPotlukkById(), watchGetPotlukkDetails(),
-         watchCancelPotlukk()]) // an array of watcher sagas
+         watchCancelPotlukk(), watchSwapDishesByForm()]) // an array of watcher sagas
 
 }
 

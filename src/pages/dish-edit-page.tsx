@@ -1,4 +1,4 @@
-import { Dishes, PotlukkActions, Allergen, LukkerUserState, DishesSwapInput } from "../reducers/potlukk-reducer";
+import { Dishes, PotlukkActions, Allergen, LukkerUserState, DishesSwapInput, PotlukkNotificationInput } from "../reducers/potlukk-reducer";
 import { useNavigate, useParams } from "react-router-dom";
 import { useEffect, useReducer } from "react";
 import { useDispatch, useSelector } from "react-redux";
@@ -34,7 +34,7 @@ export function DishEditPage(){
         potlukkId:Number(potlukkId),
         dishes: resultDishes
         }
-        
+        //edit dish
         sendDispatch({type:"REQUEST_SWAP_DISHES", payload:form})
         router("/host/" + potlukkId.toString())
     }
@@ -47,7 +47,14 @@ export function DishEditPage(){
         potlukkId:Number(potlukkId),
         dishes: resultDishes
         }
-        
+        //cancell dish here
+        const notified:PotlukkNotificationInput = {
+            affectedPotlukkId:Number(potlukkId),
+            createdByUser:userid,
+            description:dishName + " has been removed",
+            kind: "DISH_REMOVED"
+        }
+        sendDispatch({type:"REQUEST_CREATE_NOTIFICATION",payload:notified})
         sendDispatch({type:"REQUEST_SWAP_DISHES", payload:form})
         router("/host/" + potlukkId.toString())
     }

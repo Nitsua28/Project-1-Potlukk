@@ -63,7 +63,8 @@ const testState:LukkerUserState ={
       kind:NotificationKind.INVITE_SENT,
       eventId:0,
       timestamp:0
-  }
+  },
+    filteredNotificationList:[]
 }
 
 const testU1:LukkerUserInfo ={

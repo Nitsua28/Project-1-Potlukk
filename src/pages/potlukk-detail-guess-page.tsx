@@ -1,5 +1,5 @@
 
-import { InvitationUpdateInput, LukkerUserState, Potlukk, PotlukkActions } from "../reducers/potlukk-reducer";
+import { InvitationUpdateInput, LukkerUserState, Potlukk, PotlukkActions, PotlukkNotificationInput } from "../reducers/potlukk-reducer";
 import 'react-calendar/dist/Calendar.css';
 import { NavBar } from "./navbar";
 import { Link, useNavigate, useParams } from "react-router-dom";
@@ -36,6 +36,14 @@ export function PotlukkDetailGuest(){
         potlukkerId: userid,
         status: status
     }
+    const notified:PotlukkNotificationInput = {
+        affectedPotlukkId:Number(potlukkId),
+        createdByUser:userid,
+        description:selector.currentPotluck.details.description,
+        kind: status ===  "DECLINED" ? "INVITE_DECLINE":"INVITE_ACCEPTED"
+    }
+    sendDispatch({type:"REQUEST_CREATE_NOTIFICATION",payload:notified});
+    
     sendDispatch({type: "REQUEST_UPDATE_INVITE", payload: form});
   }
   useEffect(()=>{ // use effect for rest gets/ constant display

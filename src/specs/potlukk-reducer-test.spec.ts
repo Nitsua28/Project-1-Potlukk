@@ -1,4 +1,4 @@
-import { InvitationStatus, LukkerUserInfo, lukkerUserReducer, LukkerUserState, Potlukk, PotlukkDetails, PotlukkStatus } from "../reducers/potlukk-reducer"
+import { InvitationStatus, LukkerUserInfo, lukkerUserReducer, LukkerUserState, NotificationKind, Potlukk, PotlukkDetails, PotlukkStatus } from "../reducers/potlukk-reducer"
 import {PotlukkCreationInputState} from "../reducers/potluck-form-reducer"
 
 const testState:LukkerUserState ={
@@ -55,7 +55,15 @@ const testState:LukkerUserState ={
     error:false,
     newUserAdded:false,
     filteredPotlukkList: [],
-    dishes: []
+    dishes: [],
+    addedNotification: {
+      affectedPotlukkId:0,
+      createdByUser:0,
+      description:"",
+      kind:NotificationKind.INVITE_SENT,
+      eventId:0,
+      timestamp:0
+  }
 }
 
 const testU1:LukkerUserInfo ={

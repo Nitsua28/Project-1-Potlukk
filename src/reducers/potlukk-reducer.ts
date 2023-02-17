@@ -17,12 +17,12 @@ export type Allergen = [
     "TREENUT"?
 ]
 
-export enum InvitationStatus {
-    ACCEPTED,
-    MAYBE,
-    DECLINED,
-    PENDING
-}
+export type InvitationStatus =[
+    "ACCEPTED"?,
+    "MAYBE"?,
+    "DECLINED"?,
+    "PENDING"?
+]
 
 export enum NotificationKind {
     DISH_ADDED,
@@ -96,13 +96,19 @@ export type CreateUserForm = {
     allergies: string[];
 }
 export type Invitation = {
-    status: InvitationStatus,
+    status: string,
     potlukker: LukkerUserInfo,
 }
 
 export type InvitationSendInput = {
     potlukkId: number,
     potlukkerId: number
+}
+
+export type InvitationUpdateInput = {
+    potlukkId: number,
+    potlukkerId: number,
+    status: string
 }
 //state held in this reducer
 export type LukkerUserState = {
@@ -167,13 +173,14 @@ export type RequestSwapDishes = {type: "REQUEST_SWAP_DISHES", payload: DishesSwa
 export type Refresh_Users = {type: "REFRESH_USERS"}
 export type RequestPotlukkDetailsAction = {type:"REQUEST_POTLUKK_DETAILS"}
 export type RequestCreateNotification = {type:"REQUEST_CREATE_NOTIFICATION",payload:PotlukkNotificationInput}
+export type RequestUpdateInvite = {type:"REQUEST_UPDATE_INVITE", payload:InvitationUpdateInput}
 // Action types
 export type PotlukkActions = CreateUserAction | GetUsersAction | AddUserAction | SetErrorAction
         | ClearErrorAction | ClearUserAdded | SetUser | SignInUser |
         RequestGetUsersAction | GetUserByName | Refresh_Users | AddPotlukk | RequestCreatePotlukk
         | InviteUserAction | DeleteInvitedAction | RequestEditPotlukk | ClearInvited | RequestPotlukkDetailsAction 
         | GetPotlukkDetails | SetCurrentPotlukk | RequestGetPotlukkById | RequestCancelPotlukk
-        | RequestSwapDishes | RequestCreateNotification | SetNotificationAction;
+        | RequestSwapDishes | RequestCreateNotification | SetNotificationAction | RequestUpdateInvite;
 
 
 export const initialState: LukkerUserState = {

@@ -1,5 +1,5 @@
 import { SignInForm } from "../pages/signin-page";
-import { CreateUserForm, DishesSwapInput, InvitationSendInput, LukkerUserInfo, Potlukk, PotlukkNotification, PotlukkNotificationInput } from "../reducers/potlukk-reducer";
+import { CreateUserForm, DishesSwapInput, InvitationSendInput, InvitationUpdateInput, LukkerUserInfo, Potlukk, PotlukkNotification, PotlukkNotificationInput } from "../reducers/potlukk-reducer";
 import { PotlukkCreationInputState } from "../reducers/potluck-form-reducer";
 import { PotlukkEditInputState } from "../reducers/potluck-edit-form-reducer";
 import { DishFormState } from "../reducers/dish-form-reducer";
@@ -207,7 +207,57 @@ export async function getPotlukkuserDetails():Promise<Potlukk[]>{
   const potlukk:Potlukk[] = responseBody.data.potlukks;
   return potlukk
 }
+export async function updateInvite(form: InvitationUpdateInput):Promise<Potlukk>{
 
+  const query = `mutation changeInviteStatus($input: InvitationUpdateInput!){
+    updateInvite(input: $input){
+      ...on Potlukk{
+        potlukkId
+        details{
+          title
+          location
+          status
+          description
+          isPublic
+          time
+          tags
+        }
+        host{
+          userId
+          username
+          fname
+          lname
+          allergies
+        }
+        invitations{
+          status
+          potlukker{
+            userId
+            username
+            fname
+            lname
+            allergies
+          }
+        }
+          dishes{
+            name
+            description
+            broughtBy
+            serves
+            allergens
+          }
+        }
+    }
+  }`
+
+  const variables = {input:form}
+  const body = JSON.stringify({query:query,variables:variables})
+
+  const httpResponse = await fetch("http://127.0.0.1:8000/graphql", {method:"POST", body, headers:{"Content-Type":"application/json"}});
+  const responseBody = await httpResponse.json();
+  const potlukk:Potlukk = responseBody.data.updateInvite;
+  return potlukk
+}
 export async function sendInvite(form: InvitationSendInput):Promise<Potlukk>{
 
   const query = `mutation SendInvite($input: InvitationSendInput!){

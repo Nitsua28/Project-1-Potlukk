@@ -34,7 +34,7 @@ const testState:LukkerUserState ={
         },
         invitations: [
           {
-            status: InvitationStatus.PENDING,
+            status: "PENDING",
             potlukker: {
               userId: 56452,
               username: "Host",

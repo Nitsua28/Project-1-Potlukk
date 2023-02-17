@@ -11,39 +11,38 @@ import { useDispatch, useSelector } from "react-redux";
 import { PotlukkEditFormReducer, PotlukkEditInputState } from "../reducers/potluck-edit-form-reducer";
 import { Invitation_Component } from "../components/invitation_component";
 import { Attendees_Component } from "../components/attendees_component";
-//remember to take in putlukk object as props
-//prop typing error remember
-export function PotlukkDetailHost(){
-  const[update,setUpdate] = useState<boolean>(false)
-  const {potlukk} = useParams()
-  const sendDispatch = useDispatch()<PotlukkActions>
-  const potlukkId = Number(potlukk);
-  const selector = useSelector((store: LukkerUserState) => store)
-  //console.log(selector.currentPotluck)
-  const details = selector.currentPotluck.details
-  //console.log(details)
-  const initialState: PotlukkEditInputState = {
-          potlukkId: potlukkId,
-          title: details.title,
-          location: details.location,
-          status: details.status.toString(),
-          description: details.description,
-          isPublic: details.isPublic,
-          time: details.time,
-          tags: details.tags
+import { Dishes_Component } from "../components/dishes-component";
 
-  }
-  useEffect(()=>{ // use effect for rest gets/ constant display
-      sendDispatch({type: "REQUEST_GET_POTLUKK_BY_ID", payload: potlukkId}); // await since it rreturns a promise
-  },[update]);
-  
+export function PotlukkDetailHost(){
+  const sendDispatch = useDispatch()<PotlukkActions>
   const alert = useAlert();
   const router = useNavigate();
-  
+  const {potlukk} = useParams();
+  const potlukkId = Number(potlukk);
+  let initialState: PotlukkEditInputState = {
+    potlukkId: potlukkId,
+    title: "",
+    location: "",
+    status: "SCHEDULED",
+    description: "",
+    isPublic: false,
+    time: 0,
+    tags: []
+
+  }
   const [FormState, dispatchForm] = useReducer(PotlukkEditFormReducer, initialState)
 
-  let date = new Date(FormState.time * 1000)
+  const selector = useSelector((store: LukkerUserState) => store)
 
+  const details = selector.currentPotluck.details
+  
+  const [tagInput, setTagInput]= useState("")
+
+  useEffect(()=>{ // use effect for rest gets/ constant display
+    sendDispatch({type: "REQUEST_GET_POTLUKK_BY_ID", payload: potlukkId}); // await since it rreturns a promise
+  },[]);
+
+  let date = new Date(FormState.time * 1000)
 
     return (
     <>
@@ -62,19 +61,19 @@ export function PotlukkDetailHost(){
               <Calendar onChange={(value: any,event: any) => dispatchForm({type: "UPDATE_TIME",payload: value.getTime() /1000})}/>
             </div>
             <div className="updatePotlukk-container">
-              <button onClick={() =>{sendDispatch({type:"REQUEST_EDIT_POTLUKK", payload: FormState});setUpdate(!update)}}>Update</button>
+              <button onClick={() =>{sendDispatch({type:"REQUEST_EDIT_POTLUKK", payload: FormState})}}>Update</button>
             </div>
             <div className="cancelPotlukk-container">
-            {/* <button onClick={() =>dispatchForm({type:"UPDATE_CANCELLED", payload: "CANCELLED"})}>Delete</button> */}
+            {/* <button onClick={()=> dispatchForm({type:"UPDATE_CANCELLED"})}>testCancel</button> */}
             <button onClick={ () => alert.open({
               message: "Are you sure you want to cancel this Potlukk?",
               buttons: [
                 {
                   label: "Yes",
                   onClick: () =>{
-                    dispatchForm({type:"UPDATE_CANCELLED", payload: "CANCELLED"})
-                    alert.close()
-                    router("/home")
+                    sendDispatch({type:"REQUEST_CANCEL_POTLUKK", payload: FormState});
+                    alert.close();
+                    router("/home");
                   },
                 },
                 {
@@ -84,26 +83,26 @@ export function PotlukkDetailHost(){
                   }
                 },
               ]
-            })}>Delete</button>
+            })}>Cancel</button>
             </div>
         </div>
         <div className="editPotlukk-container">
             <div className="editTitle-container">
               <label>Title</label>
-              <input value={FormState.title} onChange={(e) =>dispatchForm({type:"UPDATE_TITLE", payload: e.target.value})}></input>
+              <input value={FormState.title} placeholder={details.title} onChange={(e) =>dispatchForm({type:"UPDATE_TITLE", payload: e.target.value})}></input>
             </div>
             <div className="editLocation-container">
               <label>Location</label>
-              <input value={FormState.location} onChange={(e) =>dispatchForm({type:"UPDATE_LOCATION", payload: e.target.value})}></input>
+            <input value={FormState.location} placeholder={details.location} onChange={(e) =>dispatchForm({type:"UPDATE_LOCATION", payload: e.target.value})}></input>
             </div>
             <div className="editDescription-container">
               <label>Description</label>
-              <input value={FormState.description} onChange={(e) =>dispatchForm({type:"UPDATE_DESCRIPTION", payload: e.target.value})}></input>
+              <input value={FormState.description} placeholder={details.description} onChange={(e) =>dispatchForm({type:"UPDATE_DESCRIPTION", payload: e.target.value})}></input>
             </div>
             <div className="isPublic-container">
               <label>Make Public</label>
               {(FormState.isPublic) ? 
-                <input type="checkbox" onChange={() =>FormState.isPublic ? 
+                <input type="checkbox" placeholder={details.isPublic.toString()} onChange={() =>FormState.isPublic ? 
                         dispatchForm({type:"UPDATE_ISPUBLIC", payload: false}) : 
                         dispatchForm({type:"UPDATE_ISPUBLIC", payload: true})} checked></input> 
                         :
@@ -111,16 +110,30 @@ export function PotlukkDetailHost(){
                         dispatchForm({type:"UPDATE_ISPUBLIC", payload: false}) : 
                         dispatchForm({type:"UPDATE_ISPUBLIC", payload: true})}></input>}
             </div>
+            <div className="tags-container">
+                <div className="tags-input-container">
+                    <input placeholder={details.tags.join(", ")} onChange={(e)=> setTagInput(e.target.value)}></input>
+                </div>
+                <div className="tagsbutton-container">
+                    <button onClick={(e)=>dispatchForm({type:"ADD_TAG", payload: tagInput})}>add tag</button>
+                </div>
+                <div className="tagsshow-container">
+                    <div>{FormState.tags}</div>
+                </div>
+            </div>
         </div>
         <div className="dishes-container">
             <div className="dishes-header-container">
                 <h1>Dishes</h1>
             </div>
-            <div className="dishes-list-container"></div>
+            <div className="dishes-list-container">
+        
+              <Dishes_Component number={potlukkId}/>
+            </div>
             <div className="create-dish-container"></div>
         </div>
         <div className="attendee-container">
-          <Attendees_Component />
+          <Attendees_Component number={potlukkId}/>
         </div>
         <div>
           <h1>Invite</h1>

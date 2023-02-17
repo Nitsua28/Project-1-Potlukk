@@ -36,14 +36,14 @@ function App() {
           <Route path='/registration' element={<RegisterPage/>}/>
           <Route path='/guest/:potlukk' element={<PotlukkDetailGuest/>}/>
           <Route path='/host/:potlukk' element={<PotlukkDetailHost/>}/>
-          {/*bad practice?*/ }
+  
           <Route path="/error" element={<RegisterFailed/>}/>
           <Route path="/success" element={<RegisterSuccess/>}/>
 
           <Route path='/createPotlukk' element={<Hostpage/>}/>
 
           <Route path='/dishcreate' element={<DishCreatePage/>}/>
-          <Route path='/dishedit' element={<DishEditPage/>}/>
+          <Route path='/dishedit/:potlukk/:dishname' element={<DishEditPage/>}/>
 
         </Routes>
       </BrowserRouter>

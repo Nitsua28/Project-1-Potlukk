@@ -13,15 +13,16 @@ export type PotlukkEditInputState = {
 
 export type UpdateTitle = {type: "UPDATE_TITLE", payload:string}
 export type UpdateLocation = {type: "UPDATE_LOCATION", payload:string}
-export type UpdateCancelledAction = {type:"UPDATE_CANCELLED", payload:"CANCELLED"}
+export type UpdateCancelledAction = {type:"UPDATE_CANCELLED"}
 export type UpdateDescription = {type: "UPDATE_DESCRIPTION", payload: string}
 export type UpdateIsPublic = {type: "UPDATE_ISPUBLIC", payload: boolean}
 export type UpdateTime = {type: "UPDATE_TIME", payload: number}
 export type AddTag = {type: "ADD_TAG", payload: string}
 export type DeleteTag = {type: "DELETE_TAG", payload: string}
+export type LoadEdit = {type:"LOAD_EDIT_FORM", payload:PotlukkEditInputState}
 
 export type PotlukkEditInputFormActions = UpdateDescription | UpdateIsPublic | UpdateLocation |
- UpdateCancelledAction | UpdateTitle | UpdateTime | AddTag
+ UpdateCancelledAction | UpdateTitle | UpdateTime | AddTag | LoadEdit
 
 export function PotlukkEditFormReducer(state: PotlukkEditInputState, action: PotlukkEditInputFormActions):PotlukkEditInputState{
 
@@ -36,7 +37,9 @@ export function PotlukkEditFormReducer(state: PotlukkEditInputState, action: Pot
             return nextState
         }
         case "UPDATE_CANCELLED":{
-            nextState.status = action.payload;
+            console.log("step 2");
+            nextState.status = "CANCELLED";
+            console.log(nextState.status)
             return nextState
         }
         case "UPDATE_DESCRIPTION":{
@@ -53,6 +56,18 @@ export function PotlukkEditFormReducer(state: PotlukkEditInputState, action: Pot
         }
         case "ADD_TAG":{
             nextState.tags.push(action.payload);
+            return nextState
+        }
+
+        case "LOAD_EDIT_FORM":{
+            nextState.potlukkId = action.payload.potlukkId;
+            nextState.title = action.payload.title;
+            nextState.location = action.payload.location;
+            nextState.status = action.payload.status;
+            nextState.description = action.payload.description;
+            nextState.isPublic = action.payload.isPublic;
+            nextState.time = action.payload.time;
+            nextState.tags = action.payload.tags;
             return nextState
         }
         

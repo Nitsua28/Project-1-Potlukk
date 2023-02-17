@@ -3,8 +3,7 @@ export type PotlukkCreationInputState = {
     details:{
         title: string,
         location: string,
-        // scheduled: boolean,
-        // cancelled: boolean,
+
         status: string,
         description: string,
         isPublic: Boolean,
@@ -17,7 +16,6 @@ export type PotlukkCreationInputState = {
 
 export type UpdateTitle = {type: "UPDATE_TITLE", payload:string}
 export type UpdateLocation = {type: "UPDATE_LOCATION", payload:string}
-export type UpdateScheduledAction = {type:"UPDATE_SCHEDULED", payload:"SCHEDULED"}
 export type UpdateCancelledAction = {type:"UPDATE_CANCELLED", payload:"CANCELLED"}
 export type UpdateDescription = {type: "UPDATE_DESCRIPTION", payload: string}
 export type UpdateIsPublic = {type: "UPDATE_ISPUBLIC", payload: boolean}
@@ -25,8 +23,7 @@ export type UpdateTime = {type: "UPDATE_TIME", payload: number}
 export type AddTag = {type: "ADD_TAG", payload: string}
 export type DeleteTag = {type: "DELETE_TAG", payload: string}
 
-export type PotlukkCreationInputFormActions = UpdateDescription | UpdateIsPublic | UpdateLocation |
-UpdateScheduledAction| UpdateCancelledAction | UpdateTitle | UpdateTime | AddTag
+export type PotlukkCreationInputFormActions = UpdateDescription | UpdateIsPublic | UpdateLocation | UpdateCancelledAction | UpdateTitle | UpdateTime | AddTag
 
 export function PotlukkFormReducer(state: PotlukkCreationInputState, action: PotlukkCreationInputFormActions):PotlukkCreationInputState{
 
@@ -38,10 +35,6 @@ export function PotlukkFormReducer(state: PotlukkCreationInputState, action: Pot
         }
         case "UPDATE_LOCATION":{
             nextState.details.location = action.payload;
-            return nextState
-        }
-        case "UPDATE_SCHEDULED":{
-            nextState.details.status = action.payload;
             return nextState
         }
         case "UPDATE_CANCELLED":{

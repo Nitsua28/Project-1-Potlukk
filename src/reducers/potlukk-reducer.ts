@@ -44,7 +44,7 @@ export type PotlukkNotification ={
 }
   
 export type PotlukkNotificationInput ={
-    kind: NotificationKind
+    kind: string
     description: string
     affectedPotlukkId: number
     createdByUser: number
@@ -302,6 +302,7 @@ export function lukkerUserReducer(state: LukkerUserState = initialState, action:
         }
         case "SET_NOTIFICATION":{
             nextState.addedNotification = action.payload
+            console.log(action.payload)
             return nextState
         }
         default:

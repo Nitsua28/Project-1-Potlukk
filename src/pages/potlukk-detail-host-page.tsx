@@ -37,6 +37,11 @@ export function PotlukkDetailHost(){
   const details = selector.currentPotluck.details
   
   const [tagInput, setTagInput]= useState("")
+
+  useEffect(()=>{ // use effect for rest gets/ constant display
+    sendDispatch({type: "REQUEST_GET_POTLUKK_BY_ID", payload: potlukkId}); // await since it rreturns a promise
+  },[]);
+
   let date = new Date(FormState.time * 1000)
 
     return (
@@ -84,20 +89,20 @@ export function PotlukkDetailHost(){
         <div className="editPotlukk-container">
             <div className="editTitle-container">
               <label>Title</label>
-              <input value={FormState.title} onChange={(e) =>dispatchForm({type:"UPDATE_TITLE", payload: e.target.value})}></input>
+              <input value={FormState.title} placeholder={details.title} onChange={(e) =>dispatchForm({type:"UPDATE_TITLE", payload: e.target.value})}></input>
             </div>
             <div className="editLocation-container">
               <label>Location</label>
-              <input value={FormState.location} onChange={(e) =>dispatchForm({type:"UPDATE_LOCATION", payload: e.target.value})}></input>
+            <input value={FormState.location} placeholder={details.location} onChange={(e) =>dispatchForm({type:"UPDATE_LOCATION", payload: e.target.value})}></input>
             </div>
             <div className="editDescription-container">
               <label>Description</label>
-              <input value={FormState.description} onChange={(e) =>dispatchForm({type:"UPDATE_DESCRIPTION", payload: e.target.value})}></input>
+              <input value={FormState.description} placeholder={details.description} onChange={(e) =>dispatchForm({type:"UPDATE_DESCRIPTION", payload: e.target.value})}></input>
             </div>
             <div className="isPublic-container">
               <label>Make Public</label>
               {(FormState.isPublic) ? 
-                <input type="checkbox" onChange={() =>FormState.isPublic ? 
+                <input type="checkbox" placeholder={details.isPublic.toString()} onChange={() =>FormState.isPublic ? 
                         dispatchForm({type:"UPDATE_ISPUBLIC", payload: false}) : 
                         dispatchForm({type:"UPDATE_ISPUBLIC", payload: true})} checked></input> 
                         :
@@ -107,7 +112,7 @@ export function PotlukkDetailHost(){
             </div>
             <div className="tags-container">
                 <div className="tags-input-container">
-                    <input placeholder="tags" onChange={(e)=> setTagInput(e.target.value)}></input>
+                    <input placeholder={details.tags.join(", ")} onChange={(e)=> setTagInput(e.target.value)}></input>
                 </div>
                 <div className="tagsbutton-container">
                     <button onClick={(e)=>dispatchForm({type:"ADD_TAG", payload: tagInput})}>add tag</button>

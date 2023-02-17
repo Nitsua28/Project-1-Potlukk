@@ -312,6 +312,7 @@ export async function swapDishes(form: DishFormState):Promise<Potlukk>{
   const potlukk:Potlukk = responseBody.data.swapPotlukkDishes;
   return potlukk
 }
+
 export async function addNotification(params:PotlukkNotificationInput):Promise<PotlukkNotification> {
   const query = `mutation AddNotification($input: PotlukkNotificationInput!) {
     addNotification(input: $input) {

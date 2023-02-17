@@ -1,7 +1,7 @@
 import { takeEvery, put, all, select } from "@redux-saga/core/effects";
 import { createUser, getAllUsers, createPotlukk, verifyUser, getUserById, sendInvite, editPotlukk, getPotlukkById, getPotlukkuserDetails, swapDishes, addNotification } from "../api/potlukk-requests";
 import { CreateUserAction, LukkerUserInfo, Potlukk, RequestCreatePotlukk,
-     RequestGetUsersAction, SignInUser, RequestUserById, RequestEditPotlukk, InvitationSendInput, RequestPotlukkDetailsAction, RequestGetPotlukkById, SetCurrentPotlukk, PotlukkNotification, RequestCreateNotification  } from "../reducers/potlukk-reducer";
+     RequestGetUsersAction, SignInUser, RequestUserById, RequestEditPotlukk, InvitationSendInput, RequestPotlukkDetailsAction, RequestGetPotlukkById, SetCurrentPotlukk, PotlukkNotification, RequestCreateNotification, PotlukkNotificationInput, NotificationKind  } from "../reducers/potlukk-reducer";
 
 
 
@@ -74,6 +74,13 @@ export function* createPotlukkByForm(action: RequestCreatePotlukk){
             potlukkId: potlukk.potlukkId,
             potlukkerId: item.userId
         })})
+        const notified:PotlukkNotification = yield addNotification({
+            affectedPotlukkId:potlukk.potlukkId,
+            createdByUser:potlukk.host.userId,
+            description:potlukk.details.description,
+            kind: "INVITE_SENT"
+        });
+        yield put({type:"SET_NOTIFICATION",payload:notified})
         yield put({type:"CLEAR_INVITED"});
         yield put({type:"ADD_POTLUKK",payload: potlukk});
     }catch(e){
@@ -98,8 +105,16 @@ export function* editPotlukkByForm(action: RequestEditPotlukk){
                 potlukkerId: item.userId
             }
         )
-    })
+        })
         
+        const notified:PotlukkNotification = yield addNotification({
+            affectedPotlukkId:potlukk.potlukkId,
+            createdByUser:potlukk.host.userId,
+            description:potlukk.details.description,
+            kind: "POTLUKK_ALTERED"
+        });
+        yield put({type:"SET_NOTIFICATION",payload:notified})
+
     }catch(e){
         yield put({type:"ERROR", payload: e, error:true
         });
@@ -122,7 +137,13 @@ export function* cancelPotlukk(action: RequestEditPotlukk){
     try{
         action.payload.status = "CANCELLED";
         const potlukk: Potlukk  = yield editPotlukk(action.payload);
-        
+        const notified:PotlukkNotification = yield addNotification({
+            affectedPotlukkId:potlukk.potlukkId,
+            createdByUser:potlukk.host.userId,
+            description:potlukk.details.description,
+            kind: "POTLUKK_CANCELED"
+        });
+        yield put({type:"SET_NOTIFICATION",payload:notified})
         
     }catch(e){
         yield put({type:"ERROR", payload: e, error:true

@@ -25,7 +25,7 @@ export function Dishes_Component(props:{number:number}){
           <div>
                 <ul>
                     {selector.currentPotluck.dishes.map(
-                    (item) => <li key={item.name}> {item.name} <Link to={"/dishedit/" + props.number+ "/"+ item.name}>edit</Link></li>
+                    (item) => <li key={item.name}> {item.name} {(selector.currentPotluck.host.userId.toString() === (localStorage.getItem("userid"))&&<Link to={"/dishedit/" + props.number+ "/"+ item.name}>edit</Link>)}</li>
                     )}
                 </ul>
           </div>

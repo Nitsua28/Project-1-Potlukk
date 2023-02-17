@@ -12,8 +12,8 @@ export type UpdateName = {type: "UPDATE_NAME", payload:string}
 export type UpdateDescription = {type: "UPDATE_DESCRIPTION", payload: string}
 export type UpdateBroughtBy = {type: "UPDATE_BROUGHTBY", payload: number}
 export type UpdateServes = {type: "UPDATE_SERVES", payload: number}
-export type AddAllergen = {type: "ADD_ALLERGEN", payload: number}
-export type DeleteAllergen = {type: "DELETE_ALLERGEN", payload: number}
+export type AddAllergen = {type: "ADD_ALLERGEN", payload: string}
+export type DeleteAllergen = {type: "DELETE_ALLERGEN", payload: string}
 export type DishFormActions = UpdateName | UpdateDescription | UpdateBroughtBy | UpdateServes | AddAllergen
 | DeleteAllergen
 export function DishFormReducer(state: DishFormState, action: DishFormActions):DishFormState{
@@ -37,75 +37,15 @@ export function DishFormReducer(state: DishFormState, action: DishFormActions):D
             return nextState
         }
         case "ADD_ALLERGEN":{
-            let word = "";
-            switch(action.payload){
-                case (Allergen.MILK):{
-                    word = "MILK"
-                    break;
-                }
-                case (Allergen.EGG):{
-                    word = "EGG"
-                    break;
-                }
-                case (Allergen.FISH):{
-                    word = "FISH"
-                    break;
-                }
-                case (Allergen.SHELLFISH):{
-                    word = "SHELLFISH"
-                    break;
-                }
-                case (Allergen.SOY):{
-                    word = "SOY"
-                    break;
-                }
-                case (Allergen.WHEAT):{
-                    word = "WHEAT"
-                    break;
-                }
-                case (Allergen.TREE_NUT):{
-                    word = "TREE_NUT"
-                    break;
-                }
-            }
+            
 
-            (!(nextState.allergens.some((item) => item === word))) &&
-            nextState.allergens.push(word);
+            (!(nextState.allergens.some((item) => item === action.payload))) &&
+            nextState.allergens.push(action.payload);
             return nextState
         }
         case "DELETE_ALLERGEN":{
-            let word = "";
-            switch(action.payload){
-                case (Allergen.MILK):{
-                    word = "MILK"
-                    break;
-                }
-                case (Allergen.EGG):{
-                    word = "EGG"
-                    break;
-                }
-                case (Allergen.FISH):{
-                    word = "FISH"
-                    break;
-                }
-                case (Allergen.SHELLFISH):{
-                    word = "SHELLFISH"
-                    break;
-                }
-                case (Allergen.SOY):{
-                    word = "SOY"
-                    break;
-                }
-                case (Allergen.WHEAT):{
-                    word = "WHEAT"
-                    break;
-                }
-                case (Allergen.TREE_NUT):{
-                    word = "TREE_NUT"
-                    break;
-                }
-            }
-            let newAllergens: string[] = nextState.allergens.filter((item)=>item !== word);
+            
+            let newAllergens: string[] = nextState.allergens.filter((item)=>item !== action.payload);
             nextState.allergens = newAllergens;
             return nextState
         }

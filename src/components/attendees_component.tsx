@@ -24,7 +24,7 @@ export function Attendees_Component(props:{number:number}){
           <div>
                 <ul>
                     {selector.currentPotluck.invitations.map(
-                    (item) => <li key={item.potlukker.userId}> {item.potlukker.username} {item.status}</li>
+                    (item) => <li key={item.potlukker.userId}> {item.potlukker.username} {(selector.currentPotluck.host.userId.toString() === (localStorage.getItem("userid"))&&item.status)}</li>
                     )}
                 </ul>
           </div>

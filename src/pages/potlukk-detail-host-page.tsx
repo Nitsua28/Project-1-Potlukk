@@ -47,8 +47,9 @@ export function PotlukkDetailHost(){
     return (
     <>
       <NavBar/>
-      <div className="container">
-        <div className="calendar-container">
+      <div style={{display:"flex", width:"100%", height:"100vh", backgroundColor:"wheat", justifyContent:"center", alignItems:"baseline"}}>
+        <div style={{margin:"20px"}}>
+          <div>
             <div className="date-container">
                 <div className="date-header">
                     <h1>Date</h1>
@@ -63,6 +64,8 @@ export function PotlukkDetailHost(){
             <div className="updatePotlukk-container">
               <button onClick={() =>{sendDispatch({type:"REQUEST_EDIT_POTLUKK", payload: FormState})}}>Update</button>
             </div>
+          </div>
+          <div>
             <div className="cancelPotlukk-container">
             {/* <button onClick={()=> dispatchForm({type:"UPDATE_CANCELLED"})}>testCancel</button> */}
             <button onClick={ () => alert.open({
@@ -85,7 +88,11 @@ export function PotlukkDetailHost(){
               ]
             })}>Cancel</button>
             </div>
+          </div>
         </div>
+
+
+        <div style={{margin:"20px"}}>
         <div className="editPotlukk-container">
             <div className="editTitle-container">
               <label>Title</label>
@@ -122,7 +129,10 @@ export function PotlukkDetailHost(){
                 </div>
             </div>
         </div>
+        </div>
+      <div style={{display:"flex",flexDirection:"column", margin:"20px"}}>
         <div className="dishes-container">
+          <div>
             <div className="dishes-header-container">
                 <h1>Dishes</h1>
             </div>
@@ -134,10 +144,12 @@ export function PotlukkDetailHost(){
               <Link to={"/dishcreate/" + potlukkId.toString()}>Create</Link>
             </div>
         </div>
-        <div className="attendee-container">
-          <Attendees_Component number={potlukkId}/>
         </div>
         <div>
+          <Attendees_Component number={potlukkId}/>
+        </div>
+        </div>
+    <div style={{margin:"20px"}}>
           <h1>Invite</h1>
           <Invitation_Component/>
         </div>

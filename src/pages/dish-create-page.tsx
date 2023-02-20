@@ -3,6 +3,7 @@ import { useNavigate, useParams } from "react-router-dom";
 import { useEffect, useReducer } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { DishFormReducer, DishFormState } from "../reducers/dish-form-reducer";
+import { NavBar } from "./navbar";
 
 export function DishCreatePage(){
 
@@ -67,20 +68,26 @@ export function DishCreatePage(){
       },[]);
     return(
         <>
-            <div>
-                <div>
-                    <label>Name</label>
+            <NavBar/>
+            <div style={{display:"flex", width:"100%", height:"500vh", backgroundColor:"wheat", justifyContent:"center", alignItems:"baseline"}}>
+                <ul style={{flexDirection: "column" , width: "20%", height: "10%", justifyContent: "center", padding: "10px", position: "relative", backgroundColor: "wheat"}}>
+                    <li style={{margin: "10px"}}><label>Name</label>
                     <input onChange={(e)=> dispatchForm({type: "UPDATE_NAME",payload: e.target.value})}></input>
+                    </li>
+                    <li style={{margin: "10px"}}>
                     <label>Description</label>
                     <input onChange={(e)=> dispatchForm({type: "UPDATE_DESCRIPTION",payload: e.target.value})}></input>
+                    </li>
+                    <li style={{margin: "10px"}}>
                     <label>Serves</label>
                     <input onChange={(e)=> dispatchForm({type: "UPDATE_SERVES",payload: Number(e.target.value)})}></input>
+                    </li>
                     
-                </div>
+                </ul>
                 <div>
                     <h1>Allergens</h1>
                     <div>
-                        <ul>
+                        <ul style={{flexDirection: "column", backgroundColor: "wheat"}}>
                             <li>
                                 <label>MILK</label>
                                 <input type="checkbox" onChange={(e)=>{
@@ -139,7 +146,7 @@ export function DishCreatePage(){
                             </li>
                         </ul>
                     </div>
-                    <button onClick={()=>makeForm()}>create</button>
+                    <button style={{width: "100%", height: "100%"}}onClick={()=>makeForm()}>create</button>
                 </div>
             </div>
         </>

@@ -42,7 +42,7 @@ export function Invitation_Component(){
         <div className="invite-container">
             <div className="inviteHeader-container">List of Users</div>
             <div className="inviteResults-container">
-                <ul>
+                <ul style={{flexDirection: "column"}}>
                     {listArray.map(
                         (item)=><li key={item.username}>{item.username}{item.fname} {item.lname} {}
                         <button onClick={() =>sendDispatch({type: "INVITE_USER_ACTION",
@@ -53,7 +53,7 @@ export function Invitation_Component(){
         <div className="invited-container">
             <div className="invitedHeader-container">Users to Invite</div>
             <div className="invitedResults-container">
-                <ul>
+                <ul style={{flexDirection: "column"}}>
                 {selector.invited.map(
             (item)=><li key={item.username}>{item.username}{item.fname} {item.lname}
             <button onClick={() =>sendDispatch({type: "DELETE_INVITED_ACTION",

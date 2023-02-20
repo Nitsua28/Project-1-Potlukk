@@ -23,7 +23,7 @@ export function Dishes_Component(props:{number:number}){
     return (
         <>
           <div>
-                <ul>
+                <ul style={{flexDirection: "column"}}>
                     {selector.currentPotluck.dishes.map(
                     (item) => <li key={item.name}> {item.name} {(selector.currentPotluck.host.userId.toString() === (localStorage.getItem("userid"))&&<Link to={"/dishedit/" + props.number+ "/"+ item.name}>edit</Link>)}</li>
                     )}

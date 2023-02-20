@@ -42,7 +42,7 @@ export function DishCreatePage(){
             const notified:PotlukkNotificationInput = {
                 affectedPotlukkId:Number(potlukkId),
                 createdByUser:userid,
-                description:FormState.name,
+                description:`${FormState.name} has been added to ${currentPotluck.details.title} by ${localStorage.getItem("username")}`,
                 kind: "DISH_ADDED"
             }
             sendDispatch({type:"REQUEST_CREATE_NOTIFICATION",payload:notified});

@@ -198,6 +198,9 @@ export async function getPotlukkuserDetails():Promise<Potlukk[]>{
         status
       }
       potlukkId
+      details {
+        title
+      }
     }
   }`
 

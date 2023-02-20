@@ -4,7 +4,14 @@ import { useNavigate } from "react-router";
 import { LukkerUserState, PotlukkActions } from "../reducers/potlukk-reducer";
 import { NavBar } from "./navbar";
 
-
+const flexStyle:React.CSSProperties = {
+    border:"2px solid black",
+    padding:"5px",
+    height: "70vh",
+    width: "30%",
+    display:"flex",
+    flexDirection:"column"
+}
 
 
 export function HomePage(){
@@ -24,25 +31,28 @@ export function HomePage(){
         dispatch({type:"REQUEST_POTLUKK_DETAILS"})
     },[])
 
-    //console.log(potlukkList)
+    //console.log(potlukkList.filter(e=>e.host.userId===Number(localStorage.getItem("userid"))))
     //console.log(potlukkList.filter(e=>e.host.userId===Number(localStorage.getItem("userid")) ||  e.invitations.some(u=>u.potlukker.userId===Number(localStorage.getItem("userid"))&&u.status.toString()==="ACCEPTED"))) 
     return <>
         <NavBar/>
         <div style={{display:"flex", width:"100%", height:"100vh", backgroundColor:"wheat", justifyContent:"center", alignItems:"center"}}>
-            <div>
-                <h1>Invited Potlukks</h1>
+            <div style={flexStyle}>
+                <h1 style={{borderBottom:"2px solid black"}}>Invited Potlukks</h1>
+                <hr />
                 {potlukkList.filter(e=>e.invitations.some(u=>u.potlukker.userId===Number(localStorage.getItem("userid"))
-                &&u.status.toString()==="PENDING" )).map(f=><div><button onClick={()=>router("/guest/"+f.potlukkId)}>{f.potlukkId}</button></div>)}
+                &&u.status.toString()==="PENDING" )).map(f=><div style={{borderBottom:"1px solid black", display:"flex", width:"100%",alignItems:"center"}}>{f.details.title}<button style={{display:"block", marginLeft:"auto",marginRight:"10px"}} onClick={()=>router("/guest/"+f.potlukkId)}>Check it Out</button></div>)}
             </div>
-            <div>
-                <h1>Attending Potlukks</h1>
+            <div style={flexStyle}>
+                <h1 style={{borderBottom:"2px solid black"}}>Attending Potlukks</h1>
+                <hr />
                 {potlukkList.filter(e=>e.host.userId===Number(localStorage.getItem("userid")) 
                 ||  e.invitations.some(u=>u.potlukker.userId===Number(localStorage.getItem("userid"))
-                &&u.status.toString()==="ACCEPTED")).map(f=><div><button onClick={()=>router(f.host.userId===Number(localStorage.getItem("userid")) ? "/host/"+f.potlukkId:"/guest/"+f.potlukkId)}>{f.potlukkId}</button></div>)}
+                &&u.status.toString()==="ACCEPTED")).map(f=><div style={{borderBottom:"1px solid black", display:"flex", width:"100%",alignItems:"center"}}>{f.host.userId===Number(localStorage.getItem("userid")) && "[host]"} {f.details.title}<button style={{display:"block", marginLeft:"auto",marginRight:"10px"}} onClick={()=>router(f.host.userId===Number(localStorage.getItem("userid")) ? "/host/"+f.potlukkId:"/guest/"+f.potlukkId)}>Check it Out</button></div>)}
             </div>
-            <div>
-                <h1>Notifications</h1>
-                {notificationList.map(n => <div><button onClick={()=>router("/guest/"+n.affectedPotlukkId)}>{n.kind}</button></div>)}
+            <div style={flexStyle}>
+                <h1 style={{borderBottom:"2px solid black"}}>Notifications</h1>
+                <hr />
+                {notificationList.map(n => n.createdByUser===Number(localStorage.getItem("userid")) ? <></>:<div style={{borderBottom:"1px solid black", display:"flex", width:"100%",alignItems:"center"}}>{n.description}<button style={{display:"block", marginLeft:"auto",marginRight:"10px"}} onClick={()=>router(potlukkList.filter(p=>p.potlukkId===n.affectedPotlukkId)[0].host.userId===Number(localStorage.getItem("userid")) ? "/host/"+n.affectedPotlukkId:"/guest/"+n.affectedPotlukkId)}>See Details</button></div>)}
             </div>
         </div>
     </>

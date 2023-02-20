@@ -55,9 +55,9 @@ export function PotlukkDetailGuest(){
     return (
     <>
       <NavBar/>
-      <div>
-        <div></div>
-        <div className="meta-info-container">
+      <div style={{display:"flex", width:"100%", height:"100vh", backgroundColor:"wheat", justifyContent:"center", alignItems:"baseline"}}>
+        
+        <div className="meta-info-container" style={{margin:"20px"}}>
             <div>
                 <h1>{details.title}</h1>
                 <p>{details.description}</p>
@@ -93,13 +93,15 @@ export function PotlukkDetailGuest(){
 
             </div>
         </div>
-        <div className="dishes-container">
+        <div className="dishes-container" style={{display:"flex",flexDirection:"column", margin:"20px"}}>
+            <h1>Dishes</h1>
             <Dishes_Component number={potlukkId}/>
+            <Link to={"/dishcreate/" + potlukkId.toString()}>Create</Link>
         </div>
         <div>
-        <Link to={"/dishcreate/" + potlukkId.toString()}>Create</Link>
+        
         </div>
-        <div className="attendees-container">
+        <div className="attendees-container" style={{margin:"20px"}}>
             <Attendees_Component number={potlukkId}/>
         </div>
       </div>

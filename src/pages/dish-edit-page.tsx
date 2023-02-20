@@ -3,6 +3,7 @@ import { useNavigate, useParams } from "react-router-dom";
 import { useEffect, useReducer } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { DishFormReducer, DishFormState } from "../reducers/dish-form-reducer";
+import { NavBar } from "./navbar";
 
 export function DishEditPage(){
 
@@ -70,20 +71,21 @@ export function DishEditPage(){
       },[]);
     return(
         <>
-            <div>
-                <div>
-                    <label>Name</label>
-                    <input value={dishname}></input>
-                    <label>Description</label>
-                    <input onChange={(e)=> dispatchForm({type: "UPDATE_DESCRIPTION",payload: e.target.value})}></input>
-                    <label>Serves</label>
-                    <input onChange={(e)=> dispatchForm({type: "UPDATE_SERVES",payload: Number(e.target.value)})}></input>
-                    <button onClick={deleteForm}>Delete</button>
-                </div>
+            <NavBar/>
+            <div style={{display:"flex", width:"100%", height:"500vh", backgroundColor:"wheat", justifyContent:"center", alignItems:"baseline"}}>
+                <ul style={{flexDirection: "column" , width: "20%", height: "10%", justifyContent: "center", padding: "10px", position: "relative", backgroundColor: "wheat"}}>
+                    <li style={{margin: "10px"}}><label>Name</label>
+                    <input value={dishname}></input></li>
+                    <li style={{margin: "10px"}}><label>Description</label>
+                    <input onChange={(e)=> dispatchForm({type: "UPDATE_DESCRIPTION",payload: e.target.value})}></input></li>
+                    <li style={{margin: "10px"}}><label>Serves</label>
+                    <input onChange={(e)=> dispatchForm({type: "UPDATE_SERVES",payload: Number(e.target.value)})}></input></li>
+                    <li style={{margin: "10px"}}> <button onClick={deleteForm}>Delete</button></li>
+                </ul>
                 <div>
                     <h1>Allergens</h1>
-                    <div>
-                        <ul>
+                    <div style={{width: ""}}>
+                        <ul style={{flexDirection: "column", backgroundColor: "wheat"}}>
                             <li>
                                 <label>MILK</label>
                                 <input type="checkbox" onChange={(e)=>{
@@ -142,7 +144,7 @@ export function DishEditPage(){
                             </li>
                         </ul>
                     </div>
-                    <button onClick={()=>makeForm()}>update</button>
+                    <button style={{width: "100%", height: "100%"}}onClick={()=>makeForm()}>update</button>
                 </div>
             </div>
         </>

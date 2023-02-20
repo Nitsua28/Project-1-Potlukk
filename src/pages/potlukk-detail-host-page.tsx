@@ -1,7 +1,7 @@
 
 import { LukkerUserState, Potlukk, PotlukkActions } from "../reducers/potlukk-reducer";
 import Calendar from 'react-calendar';
-//import "../stylesheets/potlukk-detail-host-style.css"
+
 import 'react-calendar/dist/Calendar.css';
 import { NavBar } from "./navbar";
 import { Link, useNavigate, useParams } from "react-router-dom";

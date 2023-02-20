@@ -39,7 +39,7 @@ export function PotlukkDetailGuest(){
     const notified:PotlukkNotificationInput = {
         affectedPotlukkId:Number(potlukkId),
         createdByUser:userid,
-        description:selector.currentPotluck.details.description,
+        description:`${localStorage.getItem("username")} has ${status ===  "DECLINED" ? "declined":"accepted"} the invitaion to ${selector.currentPotluck.details.title}.`,
         kind: status ===  "DECLINED" ? "INVITE_DECLINE":"INVITE_ACCEPTED"
     }
     sendDispatch({type:"REQUEST_CREATE_NOTIFICATION",payload:notified});

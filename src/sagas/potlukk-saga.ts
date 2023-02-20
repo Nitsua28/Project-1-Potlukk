@@ -82,7 +82,7 @@ export function* createPotlukkByForm(action: RequestCreatePotlukk){
         const notified:PotlukkNotification = yield addNotification({
             affectedPotlukkId:potlukk.potlukkId,
             createdByUser:potlukk.host.userId,
-            description:potlukk.details.description,
+            description:`${potlukk.host.username} has invited you to ${potlukk.details.title}. Will you accept?`,
             kind: "INVITE_SENT"
         });
         yield put({type:"SET_NOTIFICATION",payload:notified})
@@ -115,7 +115,7 @@ export function* editPotlukkByForm(action: RequestEditPotlukk){
         const notified:PotlukkNotification = yield addNotification({
             affectedPotlukkId:potlukk.potlukkId,
             createdByUser:potlukk.host.userId,
-            description:potlukk.details.description,
+            description:`${potlukk.details.title} has been changed. See how.`,
             kind: "POTLUKK_ALTERED"
         });
         yield put({type:"SET_NOTIFICATION",payload:notified})
@@ -164,7 +164,7 @@ export function* cancelPotlukk(action: RequestEditPotlukk){
         const notified:PotlukkNotification = yield addNotification({
             affectedPotlukkId:potlukk.potlukkId,
             createdByUser:potlukk.host.userId,
-            description:potlukk.details.description,
+            description:`${potlukk.details.title} has been canceled`,
             kind: "POTLUKK_CANCELED"
         });
         yield put({type:"SET_NOTIFICATION",payload:notified})
@@ -181,6 +181,7 @@ export function* getPotlukkByIdForm(action: RequestGetPotlukkById){
         
         const potlukk: Potlukk  = yield getPotlukkById(action.payload);
         yield put({type:"SET_CURRENT_POTLUKK", payload: potlukk});
+        
     }catch(e){
         yield put({type:"ERROR", payload: e, error:true
         });

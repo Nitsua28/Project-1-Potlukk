@@ -13,6 +13,7 @@ export function DishEditPage(){
     const router = useNavigate();
     const sendDispatch = useDispatch()<PotlukkActions>
     const dishes = useSelector((store: LukkerUserState) => store.currentPotluck.dishes)
+    const potlukktitle = useSelector((store: LukkerUserState) => store.currentPotluck.details.title)
 
     const initialState: DishFormState = {
             name: dishName,
@@ -51,7 +52,7 @@ export function DishEditPage(){
         const notified:PotlukkNotificationInput = {
             affectedPotlukkId:Number(potlukkId),
             createdByUser:userid,
-            description:dishName + " has been removed",
+            description:dishName + " has been removed from " + potlukktitle ,
             kind: "DISH_REMOVED"
         }
         sendDispatch({type:"REQUEST_CREATE_NOTIFICATION",payload:notified})
